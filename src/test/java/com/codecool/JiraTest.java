@@ -8,7 +8,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 public class JiraTest {
 
-    WebDriver driver;
+    private WebDriver driver;
 
     @BeforeEach
     public void setup() {
