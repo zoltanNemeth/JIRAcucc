@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 public class JiraTest {
 
     private WebDriver driver = Driver.getInstance();
+    private JiraLogin JiraLogin = new JiraLogin();
 
     @BeforeEach
     public void setup() {
@@ -24,9 +25,9 @@ public class JiraTest {
     }
 
     @Test
-    public void ManageComponents() throws InterruptedException {
-//        driver.get("https://jira.codecool.codecanvas.hu/plugins/servlet/project-config/PP1/components");
-//        Thread.sleep(1000);
+    public void LoginLogoutTest() throws InterruptedException {
+        JiraLogin.login("user13", "CoolCanvas19.");
+        JiraLogin.logout();
     }
 
 }
