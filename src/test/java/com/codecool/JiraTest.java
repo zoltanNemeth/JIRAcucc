@@ -12,7 +12,7 @@ public class JiraTest {
 
     @BeforeEach
     public void setup() {
-        System.setProperty("webdriver.chrome.driver","chromedriver");
+        System.setProperty("webdriver.chrome.driver",System.getenv("DRIVER_PATH"));
         driver = new ChromeDriver();
         driver.navigate().to("https://jira.codecool.codecanvas.hu/secure/Dashboard.jspa");
     }
