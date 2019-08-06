@@ -42,19 +42,20 @@ public class JiraTest {
 
         JiraLogin.login("user2019", "CoolCanvas19.");
         Thread.sleep(500);
-        //assertEquals(errorMsg, driver.findElement(By.className("aui-message error")));
-        //assertEquals(errorMsg, driver.findElement(By.xpath("//*[@class='aui-message error']//*[text()='Sorry, your username and password are incorrect - please try again.']")));
-        //assertEquals(errorMsg, driver.findElement(By.xpath("//p[text(),'Sorry, your username and password are incorrect - please try again.']")));
-        //assertEquals(errorMsg, driver.findElement(By.xpath("//p[contains(text(),'Sorry, your username and password are incorrect - please try again.')]"))); // ***
+        String actualErrorMsg = driver.findElement(By.xpath("//form[@id='login-form']/div/div/p")).getText();
+        assertEquals(errorMsg, actualErrorMsg);
 
         JiraLogin.login("user14", "");
         Thread.sleep(500);
+        assertEquals(errorMsg, actualErrorMsg);
 
         JiraLogin.login("", "CoolCanvas19.");
         Thread.sleep(500);
+        assertEquals(errorMsg, actualErrorMsg);
 
         JiraLogin.login("", "");
         Thread.sleep(500);
+        assertEquals(errorMsg, actualErrorMsg);
 
     }
 
