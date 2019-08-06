@@ -59,31 +59,6 @@ public class JiraTest {
 
     }
 
-    @Test
-    public void BrowseIssuesWithAdvancedSearch() throws InterruptedException {
-        String searchQuery = "project = TOUCAN";
 
-        JiraLogin.login("user14", "CoolCanvas19.");
-        Thread.sleep(500);
-
-        driver.findElement(By.id("find_link")).click();
-        Thread.sleep(500);
-        driver.findElement(By.id("issues_new_search_link_lnk")).click();
-        driver.findElement(By.id("advanced-search")).sendKeys(searchQuery);
-        Thread.sleep(500);
-        driver.findElement(By.xpath("//button[text()='Search']")).click();
-        Thread.sleep(1500);
-/*
-        List<WebElement> issues = driver.findElements(By.className("issue-list"));
-
-        for (WebElement issue : issues) {
-            if (issue.getAttribute("data-key").contains("TOUCAN-")) {
-                System.out.println("There are only TOUCAN issues here.");
-            }
-        }
-
- */
-
-    }
 
 }
