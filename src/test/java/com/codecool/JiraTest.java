@@ -34,13 +34,13 @@ public class JiraTest {
 
     @Test
     public void unsuccessfulLoginWithCaptcha() throws InterruptedException {
-        JiraLogin.login("user13", "asdfghjk");
+        JiraLogin.login("user16", "asdfghjk");
         Thread.sleep(100);
-        JiraLogin.login("user13", "asdfghjk");
+        JiraLogin.login("user16", "asdfghjk");
         Thread.sleep(100);
-        JiraLogin.login("user13", "asdfghjk");
+        JiraLogin.login("user16", "asdfghjk");
         Thread.sleep(100);
-        JiraLogin.login("user13", "CoolCanvas19.");
+        JiraLogin.login("user16", "CoolCanvas19.");
         Thread.sleep(100);
         String actual = driver.findElement(By.xpath("//form[@id='login-form']/div/div/p")).getText();
         assertEquals("Sorry, your userid is required to answer a CAPTCHA question correctly.", actual);
