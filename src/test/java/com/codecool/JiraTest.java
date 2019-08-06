@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -30,15 +29,30 @@ public class JiraTest {
 
     @Test
     public void toucanProjectContainsIssues() throws InterruptedException {
-        String password = "CoolCanvas19.";
-        JiraLogin.login("user14", password);
+        JiraLogin.login("user14", "CoolCanvas19.");
         driver.get("https://jira.codecool.codecanvas.hu/browse/TOUCAN-65?jql=project%20%3D%20TOUCAN");
 
-        WebDriverWait wait = new WebDriverWait(driver, 3);
+        WebDriverWait wait = new WebDriverWait(driver, 1);
 
         By issueOneXPath = By.xpath("//div[@class='list-content']/ol/li[@data-key='TOUCAN-1']");
         By issueTwoXPath = By.xpath("//div[@class='list-content']/ol/li[@data-key='TOUCAN-2']");
         By issueThreeXPath = By.xpath("//div[@class='list-content']/ol/li[@data-key='TOUCAN-3']");
+
+        wait.until(ExpectedConditions.presenceOfElementLocated(issueOneXPath));
+        wait.until(ExpectedConditions.presenceOfElementLocated(issueTwoXPath));
+        wait.until(ExpectedConditions.presenceOfElementLocated(issueThreeXPath));
+    }
+
+    @Test
+    public void coalaProjectContainsIssues() throws InterruptedException {
+        JiraLogin.login("user13", "CoolCanvas19.");
+        driver.get("https://jira.codecool.codecanvas.hu/issues/?jql=project%20%3D%20COALA");
+
+        WebDriverWait wait = new WebDriverWait(driver, 1);
+
+        By issueOneXPath = By.xpath("//div[@class='list-content']/ol/li[@data-key='COALA-1']");
+        By issueTwoXPath = By.xpath("//div[@class='list-content']/ol/li[@data-key='COALA-2']");
+        By issueThreeXPath = By.xpath("//div[@class='list-content']/ol/li[@data-key='COALA-3']");
 
         wait.until(ExpectedConditions.presenceOfElementLocated(issueOneXPath));
         wait.until(ExpectedConditions.presenceOfElementLocated(issueTwoXPath));
