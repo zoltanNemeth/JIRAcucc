@@ -94,4 +94,34 @@ public class JiraTest {
         }
     }
 
+    @Test
+    public void successfulCreateAnotherIssue() throws InterruptedException {
+        String projectName = "Main Testing Project (MTP)";
+        String issueType = "Task";
+        String summary = "This is an issue summary";
+
+        JiraLogin.login("user13", "CoolCanvas19.");
+        driver.findElement(By.id("create_link")).click();
+
+        By createIssueId = By.id("create-issue-dialog");
+        WebDriverWait wait = new WebDriverWait(driver, 3);
+        wait.until(ExpectedConditions.presenceOfElementLocated(createIssueId));
+
+        WebElement selectedProject = driver.findElement(By.id("project-field"));
+        if (!selectedProject.getText().equals(projectName)) {
+            selectedProject.sendKeys(projectName);
+        }
+
+        WebElement selectedIssueType = driver.findElement(By.id("issuetype-field"));
+        if (!selectedIssueType.getText().equals(issueType)) {
+            selectedIssueType.sendKeys(issueType);
+        }
+
+        driver.findElement(By.id("summary")).sendKeys(summary);
+        WebElement checkBox = driver.findElement(By.id("qf-create-another"));
+        checkBox.click();
+
+        driver.findElement(By.id("create-issue-submit")).click();
+    }
+
 }
