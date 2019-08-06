@@ -28,7 +28,7 @@ public class JiraTest {
     }
 
     @Test
-    public void toucanProjectContainsIssues() throws InterruptedException {
+    public void ToucanProjectContainsIssues() throws InterruptedException {
         JiraLogin.login("user14", "CoolCanvas19.");
         driver.get("https://jira.codecool.codecanvas.hu/browse/TOUCAN-65?jql=project%20%3D%20TOUCAN");
 
@@ -44,7 +44,26 @@ public class JiraTest {
     }
 
     @Test
-    public void coalaProjectContainsIssues() throws InterruptedException {
+    public void JetiProjectContainsIssues() throws InterruptedException {
+        JiraLogin.login("user13", "CoolCanvas19.");
+        driver.get("https://jira.codecool.codecanvas.hu/issues/?jql=project%20%3D%20JETI");
+
+        WebDriverWait wait = new WebDriverWait(driver, 1);
+
+        By nextPageXPath = By.xpath("//div[@data-displayable-total='55']/a[2]/span");
+        wait.until(ExpectedConditions.elementToBeClickable(nextPageXPath)).click();
+
+        By issueOneXPath = By.xpath("//div[@class='list-content']/ol/li[@data-key='JETI-1']");
+        By issueTwoXPath = By.xpath("//div[@class='list-content']/ol/li[@data-key='JETI-2']");
+        By issueThreeXPath = By.xpath("//div[@class='list-content']/ol/li[@data-key='JETI-3']");
+
+        wait.until(ExpectedConditions.presenceOfElementLocated(issueOneXPath));
+        wait.until(ExpectedConditions.presenceOfElementLocated(issueTwoXPath));
+        wait.until(ExpectedConditions.presenceOfElementLocated(issueThreeXPath));
+    }
+
+    @Test
+    public void CoalaProjectContainsIssues() throws InterruptedException {
         JiraLogin.login("user13", "CoolCanvas19.");
         driver.get("https://jira.codecool.codecanvas.hu/issues/?jql=project%20%3D%20COALA");
 
