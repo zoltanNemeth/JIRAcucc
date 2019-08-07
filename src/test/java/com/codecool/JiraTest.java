@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.By;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -13,6 +14,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -286,6 +289,22 @@ public class JiraTest {
         WebElement inputFieldData2 = driver.findElement(By.xpath("//div[@id='project-single-select']/input"));
         String inputFieldValue2 = inputFieldData2.getAttribute("value");
         assertNotEquals("JETI Project", inputFieldValue2);
+
+
+    }
+
+    @Test
+    public void mainProjectIssueEditable() throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        //String newDescription = "Now is possible to Create a 'Task' typed issue for the JETI project.";
+        JiraLogin.login("user16", "CoolCanvas19.");
+        driver.get("https://jira.codecool.codecanvas.hu/projects/MTP/issues/MTP-63?filter=allopenissues");
+        driver.findElement(By.xpath("//section[@id='content']/div[2]/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/ol/li/a[1][@href]")).click();
+        By editIssue = By.xpath("//a[@id='edit-issue']/span");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(editIssue));
+        wait.until(ExpectedConditions.elementToBeClickable(editIssue)).click();
+        //driver.findElement(By.xpath("//iframe[@id='mce_0_ifr']")).clear();
+        //driver.findElement(By.xpath("//iframe[@id='mce_0_ifr']")).sendKeys(newDescription);
 
 
     }
