@@ -2,6 +2,7 @@ package com.codecool;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -106,6 +107,7 @@ public class JiraTest {
         }
     }
 
+    @Disabled
     @Test
     public void ToucanProjectContainsIssues() throws InterruptedException {
         jiraLogin.setUser("user14");
@@ -123,6 +125,7 @@ public class JiraTest {
         wait.until(ExpectedConditions.presenceOfElementLocated(issueThreeXPath));
     }
 
+    @Disabled
     @Test
     public void JetiProjectContainsIssues() throws InterruptedException {
         jiraLogin.setUser("user13");
