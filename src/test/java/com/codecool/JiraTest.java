@@ -28,10 +28,10 @@ public class JiraTest {
 
     @BeforeEach
     public void setup() {
-        driver = new ChromeDriver();;
+        driver = new ChromeDriver();
+        jiraLogin = new JiraLogin(driver, "", "CoolCanvas19.");
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.manage().window().maximize();
-        jiraLogin = new JiraLogin(driver, System.getenv("JIRA_USER"), "CoolCanvas19.");
     }
 
     @AfterEach
@@ -45,7 +45,7 @@ public class JiraTest {
         String recordDescription = "JIRAdescription";
         WebElement newRecord = null;
 
-//        JiraLogin.login("user13", "CoolCanvas19.");
+        jiraLogin.setUser("user13");
         jiraLogin.login();
         driver.get("https://jira.codecool.codecanvas.hu/plugins/servlet/project-config/PP1/components");
 
@@ -106,7 +106,7 @@ public class JiraTest {
 
     @Test
     public void ToucanProjectContainsIssues() throws InterruptedException {
-        jiraLogin = new JiraLogin(driver,"user14", "CoolCanvas19.");
+        jiraLogin.setUser("user14");
         jiraLogin.login();
         driver.get("https://jira.codecool.codecanvas.hu/browse/TOUCAN-65?jql=project%20%3D%20TOUCAN");
 
@@ -123,6 +123,7 @@ public class JiraTest {
 
     @Test
     public void JetiProjectContainsIssues() throws InterruptedException {
+        jiraLogin.setUser("user13");
         jiraLogin.login();
         driver.get("https://jira.codecool.codecanvas.hu/issues/?jql=project%20%3D%20JETI");
 
@@ -142,6 +143,7 @@ public class JiraTest {
 
     @Test
     public void CoalaProjectContainsIssues() throws InterruptedException {
+        jiraLogin.setUser("user13");
         jiraLogin.login();
         driver.get("https://jira.codecool.codecanvas.hu/issues/?jql=project%20%3D%20COALA");
 
@@ -163,6 +165,7 @@ public class JiraTest {
         Actions actions = new Actions(driver);
         WebDriverWait wait = new WebDriverWait(driver, 3);
 
+        jiraLogin.setUser("user13");
         jiraLogin.login();
         driver.findElement(By.id("create_link")).click();
 
@@ -208,6 +211,7 @@ public class JiraTest {
 
     @Test
     public void BrowseExistingProjects() throws InterruptedException {
+        jiraLogin.setUser("user15");
         jiraLogin.login();
         driver.navigate().to("https://jira.codecool.codecanvas.hu/secure/BrowseProjects.jspa?selectedCategory=all&selectedProjectType=all");
 
@@ -230,6 +234,7 @@ public class JiraTest {
 
     @Test
     public void OpenProjectFromViewAllProjectsList() throws InterruptedException {
+        jiraLogin.setUser("user15");
         jiraLogin.login();
         driver.findElement(By.id("browse_link")).click();
         driver.findElement(By.id("project_view_all_link_lnk")).click();

@@ -29,4 +29,12 @@ public class JiraLogin {
         driver.findElement(By.id("log_out")).click();
         Thread.sleep(500);
     }
+
+    public void setUser(String user) {
+        this.username = user;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
