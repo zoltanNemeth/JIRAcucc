@@ -277,8 +277,11 @@ public class JiraTest {
         jiraLogin.setUser("user16");
         jiraLogin.login();
         driver.findElement(By.id("browse_link")).click();
+        Thread.sleep(1000);
         driver.findElement(By.id("admin_main_proj_link_lnk")).click();
+        Thread.sleep(1000);
         driver.findElement(By.id("create_link")).click();
+        Thread.sleep(300);
         WebElement inputFieldData = driver.findElement(By.xpath("//div[@id='project-single-select']/input"));
         String inputFieldValue = inputFieldData.getAttribute("value");
         assertEquals("Main Testing Project (MTP)", inputFieldValue);
@@ -289,15 +292,14 @@ public class JiraTest {
         WebElement inputFieldData2 = driver.findElement(By.xpath("//div[@id='project-single-select']/input"));
         String inputFieldValue2 = inputFieldData2.getAttribute("value");
         assertNotEquals("JETI Project", inputFieldValue2);
-
-
     }
 
     @Test
     public void mainProjectIssueEditable() throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         //String newDescription = "Now is possible to Create a 'Task' typed issue for the JETI project.";
-        JiraLogin.login("user16", "CoolCanvas19.");
+        jiraLogin.setUser("user16");
+        jiraLogin.login();
         driver.get("https://jira.codecool.codecanvas.hu/projects/MTP/issues/MTP-63?filter=allopenissues");
         driver.findElement(By.xpath("//section[@id='content']/div[2]/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/ol/li/a[1][@href]")).click();
         By editIssue = By.xpath("//a[@id='edit-issue']/span");
@@ -305,8 +307,20 @@ public class JiraTest {
         wait.until(ExpectedConditions.elementToBeClickable(editIssue)).click();
         //driver.findElement(By.xpath("//iframe[@id='mce_0_ifr']")).clear();
         //driver.findElement(By.xpath("//iframe[@id='mce_0_ifr']")).sendKeys(newDescription);
-
-
     }
+
+    @Test
+    public void unsuccessfulLoginWithCaptcha() throws InterruptedException {
+        jiraLogin.setUser("user16");
+        jiraLogin.setPassword("asdfghjk");
+        jiraLogin.login();
+        jiraLogin.login();
+        jiraLogin.login();
+        jiraLogin.setPassword("CoolCanvas19.");
+        jiraLogin.login();
+        String actual = driver.findElement(By.xpath("//form[@id='login-form']/div/div/p")).getText();
+        assertEquals("Sorry, your userid is required to answer a CAPTCHA question correctly.", actual);
+    }
+
 
 }
