@@ -59,6 +59,29 @@ public class JiraTest {
 
     }
 
+    private void checkSearchResults(String issueName) {
+        List<WebElement> issues = driver.findElements(By.className("issue-link-key"));
+
+        for (WebElement issue : issues) {
+            if (issue.getText().contains(issueName)) {
+                System.out.println("There are only TOUCAN issues here.");
+            }
+        }
+    }
+
+    @Test
+    public void BrowseExistingIssues() throws InterruptedException {
+        String issueName = "TOUCAN-";
+
+        JiraLogin.login("user14", "CoolCanvas19.");
+        Thread.sleep(500);
+
+        driver.get("https://jira.codecool.codecanvas.hu/browse/TOUCAN-57?jql=project%20%3D%20TOUCAN");
+
+        checkSearchResults(issueName);
+
+    }
+
     @Test
     public void BrowseIssuesWithAdvancedSearch() throws InterruptedException {
         String searchQuery = "project = TOUCAN";
@@ -85,13 +108,7 @@ public class JiraTest {
         driver.findElement(By.xpath("//a[text()='Basic']")).click();
         Thread.sleep(500);
 
-        List<WebElement> issues = driver.findElements(By.className("issue-link-key"));
-
-        for (WebElement issue : issues) {
-            if (issue.getText().contains(issueName)) {
-                System.out.println("There are only TOUCAN issues here.");
-            }
-        }
+        checkSearchResults(issueName);
 
     }
 
