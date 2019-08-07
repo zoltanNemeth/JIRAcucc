@@ -342,4 +342,26 @@ public class JiraTest {
 
     }
 
+    @Test
+    public void UnsuccessfulIssueCreation() throws InterruptedException {
+        String projectName = "Main Testing Project (MTP)";
+        WebDriverWait wait = new WebDriverWait(driver, 3);
+
+        jiraLogin.setUser("user13");
+        jiraLogin.login();
+
+        driver.findElement(By.id("create_link")).click();
+
+        By createIssueId = By.id("create-issue-dialog");
+        wait.until(ExpectedConditions.presenceOfElementLocated(createIssueId));
+
+        driver.findElement(By.cssSelector("#project-single-select > .icon")).click();
+        driver.findElement(By.linkText(projectName)).click();
+
+        By createButtonId = By.id("create-issue-submit");
+        WebElement createButton = wait.until(ExpectedConditions.elementToBeClickable(createButtonId));
+        createButton.click();
+
+    }
+
 }
