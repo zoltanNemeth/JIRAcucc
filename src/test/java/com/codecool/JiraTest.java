@@ -44,7 +44,6 @@ public class JiraTest {
         String inputFieldValue = inputFieldData.getAttribute("value");
         assertEquals("Main Testing Project (MTP)", inputFieldValue);
         driver.findElement(By.xpath("//form[@class='aui']/div[2]/div/a")).click();
-        Thread.sleep(500);
         driver.findElement(By.xpath("//div[@id='page']/header/nav/div/div/ul/li/a[@id='browse_link']")).click();
         driver.findElement(By.id("proj_lnk_10002_lnk")).click();
         driver.findElement(By.id("create_link")).click();
