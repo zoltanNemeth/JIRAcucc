@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -17,28 +18,30 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class JiraTest {
 
-    private WebDriver driver = Driver.getInstance();
-    private JiraLogin JiraLogin = new JiraLogin();
+    private WebDriver driver;
+    private JiraLogin jiraLogin;
 
     @BeforeEach
     public void setup() {
-        System.setProperty("webdriver.chrome.driver",System.getenv("DRIVER_PATH"));
+        driver = new ChromeDriver();;
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.manage().window().maximize();
+        jiraLogin = new JiraLogin(driver, System.getenv("JIRA_USER"), "CoolCanvas19.");
     }
 
     @AfterEach
     public void tearDown() {
-        driver.close();
+        driver.quit();
     }
 
     @Test
-    public void manageComponents() throws InterruptedException {
+    public void ManageComponents() throws InterruptedException {
         String recordName = "JIRAcucc";
         String recordDescription = "JIRAdescription";
         WebElement newRecord = null;
 
-        JiraLogin.login("user13", "CoolCanvas19.");
+//        JiraLogin.login("user13", "CoolCanvas19.");
+        jiraLogin.login();
         driver.get("https://jira.codecool.codecanvas.hu/plugins/servlet/project-config/PP1/components");
 
         String expectedProjectName = "Private Project 1";
@@ -98,10 +101,11 @@ public class JiraTest {
 
     @Test
     public void ToucanProjectContainsIssues() throws InterruptedException {
-        JiraLogin.login("user14", "CoolCanvas19.");
+        jiraLogin = new JiraLogin(driver,"user14", "CoolCanvas19.");
+        jiraLogin.login();
         driver.get("https://jira.codecool.codecanvas.hu/browse/TOUCAN-65?jql=project%20%3D%20TOUCAN");
 
-        WebDriverWait wait = new WebDriverWait(driver, 1);
+        WebDriverWait wait = new WebDriverWait(driver, 3);
 
         By issueOneXPath = By.xpath("//div[@class='list-content']/ol/li[@data-key='TOUCAN-1']");
         By issueTwoXPath = By.xpath("//div[@class='list-content']/ol/li[@data-key='TOUCAN-2']");
@@ -114,10 +118,10 @@ public class JiraTest {
 
     @Test
     public void JetiProjectContainsIssues() throws InterruptedException {
-        JiraLogin.login("user13", "CoolCanvas19.");
+        jiraLogin.login();
         driver.get("https://jira.codecool.codecanvas.hu/issues/?jql=project%20%3D%20JETI");
 
-        WebDriverWait wait = new WebDriverWait(driver, 1);
+        WebDriverWait wait = new WebDriverWait(driver, 3);
 
         By nextPageXPath = By.xpath("//div[@data-displayable-total='55']/a[2]/span");
         wait.until(ExpectedConditions.elementToBeClickable(nextPageXPath)).click();
@@ -133,10 +137,10 @@ public class JiraTest {
 
     @Test
     public void CoalaProjectContainsIssues() throws InterruptedException {
-        JiraLogin.login("user13", "CoolCanvas19.");
+        jiraLogin.login();
         driver.get("https://jira.codecool.codecanvas.hu/issues/?jql=project%20%3D%20COALA");
 
-        WebDriverWait wait = new WebDriverWait(driver, 1);
+        WebDriverWait wait = new WebDriverWait(driver, 3);
 
         By issueOneXPath = By.xpath("//div[@class='list-content']/ol/li[@data-key='COALA-1']");
         By issueTwoXPath = By.xpath("//div[@class='list-content']/ol/li[@data-key='COALA-2']");
@@ -148,13 +152,13 @@ public class JiraTest {
     }
 
     @Test
-    public void successfulCreateAnotherIssue() throws InterruptedException {
+    public void SuccessfulCreateAnotherIssue() throws InterruptedException {
         String projectName = "Main Testing Project (MTP)";
         String summary = "This is a test issue summary";
         Actions actions = new Actions(driver);
-        WebDriverWait wait = new WebDriverWait(driver, 1);
+        WebDriverWait wait = new WebDriverWait(driver, 3);
 
-        JiraLogin.login("user13", "CoolCanvas19.");
+        jiraLogin.login();
         driver.findElement(By.id("create_link")).click();
 
         By createIssueId = By.id("create-issue-dialog");
@@ -195,6 +199,50 @@ public class JiraTest {
 
         By secondNotificationLink = By.xpath("//div[@class='aui-flag']/div[1]/a[2]");
         wait.until(ExpectedConditions.elementToBeClickable(secondNotificationLink)).click();
+    }
+
+    @Test
+    public void BrowseExistingProjects() throws InterruptedException {
+        jiraLogin.login();
+        driver.navigate().to("https://jira.codecool.codecanvas.hu/secure/BrowseProjects.jspa?selectedCategory=all&selectedProjectType=all");
+
+        driver.findElement(By.xpath("//a[contains(., 'JETI')]"))
+                .click();
+
+        boolean isThereTheProjectLogo = driver.findElements(By.xpath("//div[@class='aui-sidebar-wrapper']//img[@src='/secure/projectavatar?pid=10002&avatarId=10205']")).size() > 0;
+        boolean areThereDetails = driver.findElements(By.xpath("//div[@class='details-layout']//div")).size() > 0;
+        jiraLogin.logout();
+        assertAll(() -> assertTrue(isThereTheProjectLogo), () -> assertTrue(areThereDetails));
+
+//         These lines compare whether the selected nav item and the detail section on the right side are related
+//        String navElementName = driver.findElement(By.xpath("//li[@class='aui-nav-selected']//span[2]")).getText().toLowerCase();
+//        String element2 = driver.findElement(By.xpath("//span[@class='subnavigator-title']")).getText();
+//        Boolean sthing = element2.contains(navElementName);
+//        JiraLogin.logout();
+//
+//        assertTrue(sthing);
+    }
+
+    @Test
+    public void OpenProjectFromViewAllProjectsList() throws InterruptedException {
+        jiraLogin.login();
+        driver.findElement(By.id("browse_link")).click();
+        driver.findElement(By.id("project_view_all_link_lnk")).click();
+
+        Boolean actual = false;
+
+        try {
+            WebElement linkToCoala = driver.findElement(By.xpath("//a[contains(., 'COALA')]"));
+            WebElement linkToJeti = driver.findElement(By.xpath("//a[contains(., 'JETI')]"));
+            WebElement linkToToucan = driver.findElement(By.xpath("//a[contains(., 'TOUCAN')]"));
+            actual = true;
+        } catch (Exception e) {
+            actual = false;
+        }
+
+        jiraLogin.logout();
+
+        assertTrue(actual);
     }
 
 }
