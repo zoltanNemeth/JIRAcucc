@@ -253,20 +253,24 @@ public class JiraTest {
     public void UnsuccessfulLoginWithInvalidValues() throws InterruptedException {
         String errorMsg = "Sorry, your username and password are incorrect - please try again.";
 
-        JiraLogin.login("user2019", "CoolCanvas19.");
+        jiraLogin = new JiraLogin(driver, "user2019", "CoolCanvas19.");
+        jiraLogin.login();
         Thread.sleep(500);
         String actualErrorMsg = driver.findElement(By.xpath("//form[@id='login-form']/div/div/p")).getText();
         assertEquals(errorMsg, actualErrorMsg);
 
-        JiraLogin.login("user14", "");
+        jiraLogin = new JiraLogin(driver, "user14", "");
+        jiraLogin.login();
         Thread.sleep(500);
         assertEquals(errorMsg, actualErrorMsg);
 
-        JiraLogin.login("", "CoolCanvas19.");
+        jiraLogin = new JiraLogin(driver, "", "CoolCanvas19.");
+        jiraLogin.login();
         Thread.sleep(500);
         assertEquals(errorMsg, actualErrorMsg);
 
-        JiraLogin.login("", "");
+        jiraLogin = new JiraLogin(driver, "", "");
+        jiraLogin.login();
         Thread.sleep(500);
         assertEquals(errorMsg, actualErrorMsg);
 
@@ -286,7 +290,8 @@ public class JiraTest {
     public void BrowseExistingIssues() throws InterruptedException {
         String issueName = "TOUCAN-";
 
-        JiraLogin.login("user14", "CoolCanvas19.");
+        jiraLogin = new JiraLogin(driver, "user14", "CoolCanvas19.");
+        jiraLogin.login();
         Thread.sleep(500);
 
         driver.get("https://jira.codecool.codecanvas.hu/browse/TOUCAN-57?jql=project%20%3D%20TOUCAN");
@@ -300,7 +305,8 @@ public class JiraTest {
         String searchQuery = "project = TOUCAN";
         String issueName = "TOUCAN-";
 
-        JiraLogin.login("user14", "CoolCanvas19.");
+        jiraLogin = new JiraLogin(driver, "user14", "CoolCanvas19.");
+        jiraLogin.login();
         Thread.sleep(500);
 
         driver.findElement(By.id("find_link")).click();
