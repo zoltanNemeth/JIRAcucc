@@ -3,7 +3,10 @@ package com.codecool;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
 
@@ -28,6 +31,17 @@ public class JiraTest {
     public void LoginLogoutTest() throws InterruptedException {
         JiraLogin.login("user13", "CoolCanvas19.");
         JiraLogin.logout();
+    }
+
+    @Test
+    public void mainProjectIssueEditable() throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        JiraLogin.login("user16", "CoolCanvas19.");
+        driver.get("https://jira.codecool.codecanvas.hu/projects/MTP/issues/MTP-63?filter=allopenissues");
+        driver.findElement(By.xpath("//section[@id='content']/div[2]/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/ol/li/a[1][@href]")).click();
+        By editIssue = By.xpath("//a[@id='edit-issue']");
+        wait.until(ExpectedConditions.elementToBeClickable(editIssue)).click();
+
     }
 
 }
