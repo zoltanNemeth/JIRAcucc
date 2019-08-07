@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -97,31 +98,51 @@ public class JiraTest {
     @Test
     public void successfulCreateAnotherIssue() throws InterruptedException {
         String projectName = "Main Testing Project (MTP)";
-        String issueType = "Task";
-        String summary = "This is an issue summary";
+        String summary = "This is a test issue summary";
+        Actions actions = new Actions(driver);
+        WebDriverWait wait = new WebDriverWait(driver, 1);
 
         JiraLogin.login("user13", "CoolCanvas19.");
         driver.findElement(By.id("create_link")).click();
 
         By createIssueId = By.id("create-issue-dialog");
-        WebDriverWait wait = new WebDriverWait(driver, 3);
         wait.until(ExpectedConditions.presenceOfElementLocated(createIssueId));
 
-        WebElement selectedProject = driver.findElement(By.id("project-field"));
-        if (!selectedProject.getText().equals(projectName)) {
-            selectedProject.sendKeys(projectName);
-        }
+        driver.findElement(By.cssSelector("#project-single-select > .icon")).click();
+        driver.findElement(By.linkText(projectName)).click();
 
-        WebElement selectedIssueType = driver.findElement(By.id("issuetype-field"));
-        if (!selectedIssueType.getText().equals(issueType)) {
-            selectedIssueType.sendKeys(issueType);
-        }
+        By summaryXPath = By.xpath("//input[@id='summary']");
+        WebElement summaryInputField = wait.until(ExpectedConditions.elementToBeClickable(summaryXPath));
 
-        driver.findElement(By.id("summary")).sendKeys(summary);
+        actions.moveToElement(summaryInputField);
+        actions.click();
+        actions.build().perform();
+        summaryInputField.sendKeys(summary);
+
         WebElement checkBox = driver.findElement(By.id("qf-create-another"));
         checkBox.click();
 
         driver.findElement(By.id("create-issue-submit")).click();
+
+        By notificationLink = By.partialLinkText(summary);
+        wait.until(ExpectedConditions.presenceOfElementLocated(notificationLink));
+        wait.until(ExpectedConditions.elementToBeClickable(summaryXPath));
+
+        summaryXPath = By.xpath("//input[@id='summary']");
+        summaryInputField = wait.until(ExpectedConditions.elementToBeClickable(summaryXPath));
+
+        actions.moveToElement(summaryInputField);
+        actions.click();
+        actions.build().perform();
+        summaryInputField.sendKeys(summary);
+
+        checkBox = driver.findElement(By.id("qf-create-another"));
+        checkBox.click();
+
+        driver.findElement(By.id("create-issue-submit")).click();
+
+        By secondNotificationLink = By.xpath("//div[@class='aui-flag']/div[1]/a[2]");
+        wait.until(ExpectedConditions.elementToBeClickable(secondNotificationLink)).click();
     }
 
 }
