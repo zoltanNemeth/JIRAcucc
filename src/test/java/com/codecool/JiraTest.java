@@ -258,23 +258,27 @@ public class JiraTest {
     public void UnsuccessfulLoginWithInvalidValues() throws InterruptedException {
         String errorMsg = "Sorry, your username and password are incorrect - please try again.";
 
-        jiraLogin = new JiraLogin(driver, "user2019", "CoolCanvas19.");
+        jiraLogin.setUser("user2019");
+        jiraLogin.setPassword("CoolCanvas19.");
         jiraLogin.login();
         Thread.sleep(500);
         String actualErrorMsg = driver.findElement(By.xpath("//form[@id='login-form']/div/div/p")).getText();
         assertEquals(errorMsg, actualErrorMsg);
 
-        jiraLogin = new JiraLogin(driver, "user14", "");
+        jiraLogin.setUser("user14");
+        jiraLogin.setPassword("");
         jiraLogin.login();
         Thread.sleep(500);
         assertEquals(errorMsg, actualErrorMsg);
 
-        jiraLogin = new JiraLogin(driver, "", "CoolCanvas19.");
+        jiraLogin.setUser("");
+        jiraLogin.setPassword("CoolCanvas19.");
         jiraLogin.login();
         Thread.sleep(500);
         assertEquals(errorMsg, actualErrorMsg);
 
-        jiraLogin = new JiraLogin(driver, "", "");
+        jiraLogin.setUser("");
+        jiraLogin.setPassword("");
         jiraLogin.login();
         Thread.sleep(500);
         assertEquals(errorMsg, actualErrorMsg);
@@ -295,7 +299,8 @@ public class JiraTest {
     public void BrowseExistingIssues() throws InterruptedException {
         String issueName = "TOUCAN-";
 
-        jiraLogin = new JiraLogin(driver, "user14", "CoolCanvas19.");
+        jiraLogin.setUser("user14");
+        jiraLogin.setPassword("CoolCanvas19.");
         jiraLogin.login();
         Thread.sleep(500);
 
@@ -310,7 +315,8 @@ public class JiraTest {
         String searchQuery = "project = TOUCAN";
         String issueName = "TOUCAN-";
 
-        jiraLogin = new JiraLogin(driver, "user14", "CoolCanvas19.");
+        jiraLogin.setUser("user14");
+        jiraLogin.setPassword("CoolCanvas19.");
         jiraLogin.login();
         Thread.sleep(500);
 
