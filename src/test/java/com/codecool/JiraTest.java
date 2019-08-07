@@ -35,12 +35,17 @@ public class JiraTest {
 
     @Test
     public void mainProjectIssueEditable() throws InterruptedException {
-        WebDriverWait wait = new WebDriverWait(driver, 5);
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        //String newDescription = "Now is possible to Create a 'Task' typed issue for the JETI project.";
         JiraLogin.login("user16", "CoolCanvas19.");
         driver.get("https://jira.codecool.codecanvas.hu/projects/MTP/issues/MTP-63?filter=allopenissues");
         driver.findElement(By.xpath("//section[@id='content']/div[2]/div/div/div/div/div/div/div/div/div/div/div/div[2]/div/ol/li/a[1][@href]")).click();
-        By editIssue = By.xpath("//a[@id='edit-issue']");
+        By editIssue = By.xpath("//a[@id='edit-issue']/span");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(editIssue));
         wait.until(ExpectedConditions.elementToBeClickable(editIssue)).click();
+        //driver.findElement(By.xpath("//iframe[@id='mce_0_ifr']")).clear();
+        //driver.findElement(By.xpath("//iframe[@id='mce_0_ifr']")).sendKeys(newDescription);
+
 
     }
 
