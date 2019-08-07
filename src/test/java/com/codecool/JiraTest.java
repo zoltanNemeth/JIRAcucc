@@ -10,7 +10,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.WebElement;
 
+import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -248,6 +253,93 @@ public class JiraTest {
         jiraLogin.logout();
 
         assertTrue(actual);
+    }
+    @Test
+    public void UnsuccessfulLoginWithInvalidValues() throws InterruptedException {
+        String errorMsg = "Sorry, your username and password are incorrect - please try again.";
+
+        jiraLogin.setUser("user2019");
+        jiraLogin.setPassword("CoolCanvas19.");
+        jiraLogin.login();
+        Thread.sleep(500);
+        String actualErrorMsg = driver.findElement(By.xpath("//form[@id='login-form']/div/div/p")).getText();
+        assertEquals(errorMsg, actualErrorMsg);
+
+        jiraLogin.setUser("user14");
+        jiraLogin.setPassword("");
+        jiraLogin.login();
+        Thread.sleep(500);
+        assertEquals(errorMsg, actualErrorMsg);
+
+        jiraLogin.setUser("");
+        jiraLogin.setPassword("CoolCanvas19.");
+        jiraLogin.login();
+        Thread.sleep(500);
+        assertEquals(errorMsg, actualErrorMsg);
+
+        jiraLogin.setUser("");
+        jiraLogin.setPassword("");
+        jiraLogin.login();
+        Thread.sleep(500);
+        assertEquals(errorMsg, actualErrorMsg);
+
+    }
+
+    private void checkSearchResults(String issueName) {
+        List<WebElement> issues = driver.findElements(By.className("issue-link-key"));
+
+        for (WebElement issue : issues) {
+            if (issue.getText().contains(issueName)) {
+                System.out.println("There are only TOUCAN issues here.");
+            }
+        }
+    }
+
+    @Test
+    public void BrowseExistingIssues() throws InterruptedException {
+        String issueName = "TOUCAN-";
+
+        jiraLogin.setUser("user14");
+        jiraLogin.setPassword("CoolCanvas19.");
+        jiraLogin.login();
+        Thread.sleep(500);
+
+        driver.get("https://jira.codecool.codecanvas.hu/browse/TOUCAN-57?jql=project%20%3D%20TOUCAN");
+
+        checkSearchResults(issueName);
+
+    }
+
+    @Test
+    public void BrowseIssuesWithAdvancedSearch() throws InterruptedException {
+        String searchQuery = "project = TOUCAN";
+        String issueName = "TOUCAN-";
+
+        jiraLogin.setUser("user14");
+        jiraLogin.setPassword("CoolCanvas19.");
+        jiraLogin.login();
+        Thread.sleep(500);
+
+        driver.findElement(By.id("find_link")).click();
+        Thread.sleep(500);
+        driver.findElement(By.id("issues_new_search_link_lnk")).click();
+        Thread.sleep(500);
+
+        if (driver.findElement(By.xpath("//a[text()='Basic']")).isDisplayed()) {
+            driver.findElement(By.xpath("//a[text()='Basic']")).click();
+            Thread.sleep(500);
+        }
+
+        driver.findElement(By.xpath("//a[text()='Advanced']")).click();
+        driver.findElement(By.id("advanced-search")).sendKeys(searchQuery);
+        Thread.sleep(500);
+        driver.findElement(By.xpath("//button[text()='Search']")).click();
+        Thread.sleep(1500);
+        driver.findElement(By.xpath("//a[text()='Basic']")).click();
+        Thread.sleep(500);
+
+        checkSearchResults(issueName);
+
     }
 
 }
