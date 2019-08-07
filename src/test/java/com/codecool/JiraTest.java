@@ -7,12 +7,15 @@ import org.openqa.selenium.By;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.openqa.selenium.By;
+import static org.junit.jupiter.api.Assertions.*;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
@@ -253,6 +256,22 @@ public class JiraTest {
 
         assertTrue(actual);
     }
+
+
+    @Test
+    public void browseExistingIssuesWithSearch() throws InterruptedException {
+        jiraLogin.setUser("user16");
+        jiraLogin.login();
+        driver.get("https://jira.codecool.codecanvas.hu/secure/Dashboard.jspa");
+        Thread.sleep(1000);
+        driver.findElement(By.id("find_link")).click();
+        Thread.sleep(1000);
+        driver.findElement(By.id("issues_new_search_link_lnk")).click();
+        Thread.sleep(1000);
+        String actual = driver.findElement(By.id("jira-share-trigger")).getText();
+        assertEquals("Share this search by emailing other users Share", actual);
+    }
+
 
     @Test
     public void successfulIssueCreation() throws InterruptedException {
