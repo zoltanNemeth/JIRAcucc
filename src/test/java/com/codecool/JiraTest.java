@@ -343,8 +343,9 @@ public class JiraTest {
     }
 
     @Test
-    public void UnsuccessfulIssueCreation() throws InterruptedException {
+    public void UnsuccessfulIssueCreationWithMissingInfo() throws InterruptedException {
         String projectName = "Main Testing Project (MTP)";
+        String expectedErrorMessage = "You must specify a summary of the issue.";
         WebDriverWait wait = new WebDriverWait(driver, 3);
 
         jiraLogin.setUser("user13");
@@ -362,6 +363,9 @@ public class JiraTest {
         WebElement createButton = wait.until(ExpectedConditions.elementToBeClickable(createButtonId));
         createButton.click();
 
+        By messageXPath = By.xpath("//form[@name='jiraform']/div[1]/div[2]/div[1]/div");
+        WebElement actualMessage = wait.until(ExpectedConditions.presenceOfElementLocated(messageXPath));
+        assertEquals(expectedErrorMessage, actualMessage.getText());
     }
 
 }
