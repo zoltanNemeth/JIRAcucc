@@ -46,6 +46,7 @@ public class JiraTest {
 
     @Test
     public void JetiProjectContainsIssues() throws InterruptedException {
+        JiraLogin.login("user13", "CoolCanvas19.");
         driver.get("https://jira.codecool.codecanvas.hu/issues/?jql=project%20%3D%20JETI");
 
         WebDriverWait wait = new WebDriverWait(driver, 1);
