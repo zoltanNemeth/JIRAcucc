@@ -208,38 +208,66 @@ public class JiraTest {
     public void BrowseExistingProjects() throws InterruptedException {
         jiraLogin.setUser("user15");
         jiraLogin.login();
-        driver.navigate().to("https://jira.codecool.codecanvas.hu/secure/BrowseProjects.jspa?selectedCategory=all&selectedProjectType=all");
+
+        driver.navigate()
+            .to("https://jira.codecool.codecanvas.hu/secure/BrowseProjects.jspa?selectedCategory=all&selectedProjectType=all");
 
         driver.findElement(By.xpath("//a[contains(., 'JETI')]"))
-                .click();
+            .click();
 
-        boolean isThereTheProjectLogo = driver.findElements(By.xpath("//div[@class='aui-sidebar-wrapper']//img[@src='/secure/projectavatar?pid=10002&avatarId=10205']")).size() > 0;
-        boolean areThereDetails = driver.findElements(By.xpath("//div[@class='details-layout']//div")).size() > 0;
+        boolean isThereTheProjectLogo =
+            driver.findElements(
+                By.xpath("//div[@class='aui-sidebar-wrapper']//img[@src='/secure/projectavatar?pid=10002&avatarId=10205']")
+                )
+                .size() > 0;
+
+        boolean areThereDetails =
+            driver.findElements(
+                By.xpath("//div[@class='details-layout']//div")
+                )
+                .size() > 0;
+
+        String navElementName =
+            driver.findElement(
+                By.xpath("//li[@class='aui-nav-selected']//span[2]")
+            )
+            .getText()
+            .toLowerCase();
+
+        String detailsSectionName =
+            driver.findElement(
+                By.xpath("//span[@class='subnavigator-title']")
+            )
+            .getText();
+
         jiraLogin.logout();
-        assertAll(() -> assertTrue(isThereTheProjectLogo), () -> assertTrue(areThereDetails));
 
-//         These lines compare whether the selected nav item and the detail section on the right side are related
-//        String navElementName = driver.findElement(By.xpath("//li[@class='aui-nav-selected']//span[2]")).getText().toLowerCase();
-//        String element2 = driver.findElement(By.xpath("//span[@class='subnavigator-title']")).getText();
-//        Boolean sthing = element2.contains(navElementName);
-//        JiraLogin.logout();
-//
-//        assertTrue(sthing);
+        assertAll(
+            () -> assertTrue(isThereTheProjectLogo),
+            () -> assertTrue(areThereDetails),
+            () -> assertTrue(detailsSectionName.contains(navElementName))
+        );
     }
 
     @Test
     public void OpenProjectFromViewAllProjectsList() throws InterruptedException {
         jiraLogin.setUser("user15");
         jiraLogin.login();
-        driver.findElement(By.id("browse_link")).click();
-        driver.findElement(By.id("project_view_all_link_lnk")).click();
 
-        Boolean actual = false;
+        driver.findElement(
+            By.id("browse_link")
+        ).click();
+
+        driver.findElement(
+            By.id("project_view_all_link_lnk")
+        ).click();
+
+        Boolean actual;
 
         try {
-            WebElement linkToCoala = driver.findElement(By.xpath("//a[contains(., 'COALA')]"));
-            WebElement linkToJeti = driver.findElement(By.xpath("//a[contains(., 'JETI')]"));
-            WebElement linkToToucan = driver.findElement(By.xpath("//a[contains(., 'TOUCAN')]"));
+            driver.findElement(By.xpath("//a[contains(., 'COALA')]"));
+            driver.findElement(By.xpath("//a[contains(., 'JETI')]"));
+            driver.findElement(By.xpath("//a[contains(., 'TOUCAN')]"));
             actual = true;
         } catch (Exception e) {
             actual = false;
