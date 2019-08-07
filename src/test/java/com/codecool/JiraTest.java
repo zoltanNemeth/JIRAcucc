@@ -69,10 +69,15 @@ public class JiraTest {
         driver.findElement(By.id("find_link")).click();
         Thread.sleep(500);
         driver.findElement(By.id("issues_new_search_link_lnk")).click();
+        Thread.sleep(500);
+        driver.findElement(By.xpath("//a[text()='Advanced']")).click();
         driver.findElement(By.id("advanced-search")).sendKeys(searchQuery);
         Thread.sleep(500);
         driver.findElement(By.xpath("//button[text()='Search']")).click();
         Thread.sleep(1500);
+        driver.findElement(By.xpath("//a[text()='Basic']")).click();
+        Thread.sleep(500);
+
 /*
         List<WebElement> issues = driver.findElements(By.className("issue-list"));
 
