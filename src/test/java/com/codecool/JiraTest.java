@@ -3,9 +3,7 @@ package com.codecool;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -31,7 +29,11 @@ public class JiraTest {
         driver = new ChromeDriver();
         jiraLogin = new JiraLogin(driver, "", "CoolCanvas19.");
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        driver.manage().window().maximize();
+        try {
+            driver.manage().window().maximize();
+        } catch (WebDriverException e) {
+            e.printStackTrace();
+        }
     }
 
     @AfterEach
