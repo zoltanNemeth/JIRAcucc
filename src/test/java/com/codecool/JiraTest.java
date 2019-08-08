@@ -5,11 +5,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.openqa.selenium.*;
+import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -372,5 +380,72 @@ public class JiraTest {
         WebElement actualMessage = wait.until(ExpectedConditions.presenceOfElementLocated(messageXPath));
         assertEquals(expectedErrorMessage, actualMessage.getText());
     }
+
+
+    @Test
+    public void browseExistingIssuesWithSearch() throws InterruptedException {
+        jiraLogin.setUser("user16");
+        jiraLogin.login();
+        driver.get("https://jira.codecool.codecanvas.hu/secure/Dashboard.jspa");
+        driver.findElement(By.id("find_link")).click();
+        driver.findElement(By.id("issues_new_search_link_lnk")).click();
+        String actual = driver.findElement(By.id("jira-share-trigger")).getText();
+        assertEquals("Share this search by emailing other users Share", actual);
+    }
+
+
+    @Test
+    public void successfulIssueCreation() throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        jiraLogin.setUser("user16");
+        jiraLogin.login();
+        By projectsLink = By.linkText("Projects");
+        wait.until(ExpectedConditions.elementToBeClickable(projectsLink)).click();
+        driver.findElement(By.id("admin_main_proj_link_lnk")).click();
+        driver.findElement(By.id("create_link")).click();
+        WebElement inputFieldData = driver.findElement(By.xpath("//div[@id='project-single-select']/input"));
+        String inputFieldValue = inputFieldData.getAttribute("value");
+        assertEquals("Main Testing Project (MTP)", inputFieldValue);
+        driver.findElement(By.linkText("Cancel")).click();
+        Thread.sleep(500);
+        By projectsLink2 = By.linkText("Projects");
+        wait.until(ExpectedConditions.elementToBeClickable(projectsLink2)).click();
+        driver.findElement(By.id("proj_lnk_10002_lnk")).click();
+        driver.findElement(By.id("create_link")).click();
+        WebElement inputFieldData2 = driver.findElement(By.xpath("//div[@id='project-single-select']/input"));
+        String inputFieldValue2 = inputFieldData2.getAttribute("value");
+        assertNotEquals("JETI Project", inputFieldValue2);
+    }
+
+    @Test
+    public void mainProjectIssueEditable() throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        String newDescription = "Now is possible to Create a 'Task' typed issue for the JETI project.";
+        jiraLogin.setUser("user16");
+        jiraLogin.login();
+        driver.get("https://jira.codecool.codecanvas.hu/projects/MTP/issues/MTP-63?filter=allopenissues");
+        By editIssue = By.xpath("//a[@id='edit-issue']/span");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(editIssue));
+        wait.until(ExpectedConditions.elementToBeClickable(editIssue)).click();
+        driver.findElement(By.xpath("//iframe[@id='mce_0_ifr']")).sendKeys(Keys.CONTROL + "a");
+        driver.findElement(By.xpath("//iframe[@id='mce_0_ifr']")).sendKeys(newDescription);
+        driver.findElement(By.xpath("//input[@id='edit-issue-submit']")).click();
+        String editedDescription = driver.findElement(By.xpath("//div[@id='description-val']/div")).getText();
+        assertEquals(newDescription, editedDescription);
+    }
+
+    @Test
+    public void unsuccessfulLoginWithCaptcha() throws InterruptedException {
+        jiraLogin.setUser("user16");
+        jiraLogin.setPassword("asdfghjk");
+        jiraLogin.login();
+        jiraLogin.login();
+        jiraLogin.login();
+        jiraLogin.setPassword("CoolCanvas19.");
+        jiraLogin.login();
+        String actual = driver.findElement(By.xpath("//form[@id='login-form']/div/div/p")).getText();
+        assertEquals("Sorry, your userid is required to answer a CAPTCHA question correctly.", actual);
+    }
+
 
 }
