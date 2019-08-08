@@ -84,5 +84,8 @@ fabric.properties
 .idea/sonarlint
 
 .idea
+chromedriver
+*.iml
+target
 
 # End of https://www.gitignore.io/api/intellij
