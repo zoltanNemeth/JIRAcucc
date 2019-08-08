@@ -554,7 +554,6 @@ public class JiraTest {
         jiraLogin.setUser("user17");
         jiraLogin.login();
         String appUrl = "https://jira.codecool.codecanvas.hu/projects/PP1?selectedItem=com.atlassian.jira.jira-projects-plugin%3Arelease-page&status=unreleased";
-        int idVariable = 10640;
         driver.get(appUrl);
         WebElement actualProjectName = driver.findElement(By.xpath("//a[contains(@title,'Private Project 1')]"));
         elementIsDisplay(actualProjectName);
@@ -576,6 +575,7 @@ public class JiraTest {
         WebDriverWait updateButton = new WebDriverWait(driver, 3);
 
         updateButton.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[@class='project-config-versions-add-fields aui-restfultable-focused']//input[@value='Update']"))).click();
+        String idVariable = driver.findElement(By.xpath("//table[@id='project-config-versions-table']//tbody[@class='ui-sortable']//tr[1]")).getAttribute("data-id");
         appUrl = "https://jira.codecool.codecanvas.hu/projects/PP1?selectedItem=com.atlassian.jira.jira-projects-plugin%3Arelease-page&status=unreleased";
         driver.get(appUrl);
 
