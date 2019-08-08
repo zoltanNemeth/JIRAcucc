@@ -12,6 +12,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -421,6 +428,37 @@ public class JiraTest {
         WebDriverWait popUpfield = new WebDriverWait(driver, 3);
         popUpfield.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='version-" + idVariable + "-delete-dialog']//input[@value='Yes']"))).click();
 
+    }
+
+
+
+    @Test
+    public void SuccessfulIssueCreation() throws InterruptedException {
+        jiraLogin.setUser("user17");
+        jiraLogin.login();
+        WebElement createButton = driver.findElement(By.id("create_link"));
+        createButton.click();
+        WebElement iscreateIssueDialog = driver.findElement(By.id("create-issue-dialog"));
+        WebElement issuetypeSingleSelectElement = driver.findElement(By.xpath("//*[@id=\"issuetype-single-select\"]/span"));
+        elementIsDisplay(iscreateIssueDialog);
+        issuetypeSingleSelectElement.click();
+        WebDriverWait wait = new WebDriverWait(driver, 3);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"issuetype-field\"]")));
+        WebElement issuType = driver.findElement(By.xpath("//*[@id=\"issuetype-field\"]"));
+        elementIsDisplay(issuType);
+        String actual = issuType.getAttribute("aria-activedescendant");
+        String expected = "task-1";
+        assertEquals(actual, expected);
+        issuType.click();
+        String SummaryText = "Summary";
+        getSummaryField().sendKeys(SummaryText);
+
+
+    }
+
+    protected WebElement getSummaryField() {
+        WebElement summaryField = driver.findElement(By.id("summary"));
+        return summaryField;
     }
 
     protected boolean elementIsDisplay(WebElement webElement) {
