@@ -504,4 +504,30 @@ public class JiraTest {
     }
 
 
+    @Test
+    public void CaptchaappearsAfterThirdFailedLoginAttempt() {
+        String appUrl = "https://jira.codecool.codecanvas.hu/login.jsp";
+        driver.get(appUrl);
+        for (int i = 0; i < 3; i++) {
+
+            WebElement userNameField = driver.findElement(By
+                    .xpath("//form[@id='login-form']//input[@id='login-form-username']"));
+            userNameField.sendKeys("user13");
+            WebElement passwordField = driver.findElement(By
+                    .xpath("//form[@id='login-form']//input[@id='login-form-password']"));
+            passwordField.sendKeys("asdfghjkl");
+            WebElement loginButton = driver.findElement(By
+                    .xpath("//form[@id='login-form']//input[@id='login-form-submit']"));
+            loginButton.click();
+        }
+
+        WebElement pTag = driver.findElement(By
+                .xpath("//form[@id='login-form']//p[contains(text(),'Sorry, your username and password are incorrect - please try again.')]"));
+
+        WebElement captcha = driver.findElement(By.xpath("//form[@id='login-form']//div[@id='captcha']"));
+        elementIsDisplay(pTag);
+        elementIsDisplay(captcha);
+
+    }
+
 }
