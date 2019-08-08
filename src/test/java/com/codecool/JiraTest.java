@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.*;
 import static org.junit.jupiter.api.Assertions.*;
-
-import org.openqa.selenium.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -154,6 +152,7 @@ public class JiraTest {
         wait.until(ExpectedConditions.presenceOfElementLocated(issueThreeXPath));
     }
 
+    @Disabled
     @Test
     public void CoalaProjectContainsIssues() throws InterruptedException {
         jiraLogin.setUser("user13");
@@ -434,6 +433,7 @@ public class JiraTest {
         assertEquals(newDescription, editedDescription);
     }
 
+    @Disabled
     @Test
     public void unsuccessfulLoginWithCaptcha() throws InterruptedException {
         jiraLogin.setUser("user16");
@@ -447,5 +447,70 @@ public class JiraTest {
         assertEquals("Sorry, your userid is required to answer a CAPTCHA question correctly.", actual);
     }
 
+    @Test
+    public void VerifyBrowseProjectPermissions() throws InterruptedException {
+        jiraLogin.setUser("user13");
+        jiraLogin.login();
+        VerifyPermissions("Browse Project", "BROWSE_PROJECTS");
+    }
+
+    @Test
+    public void VerifyCreateIssuePermissions() throws InterruptedException {
+        jiraLogin.setUser("user13");
+        jiraLogin.login();
+        VerifyPermissions("Create Issue", "CREATE_ISSUES");
+    }
+
+    @Test
+    public void VerifyEditIssuePermissions() throws InterruptedException {
+        jiraLogin.setUser("user13");
+        jiraLogin.login();
+        VerifyPermissions("Edit Issue", "EDIT_ISSUES");
+    }
+
+    private void VerifyPermissions(String featureName, String featureDataName) {
+        WebDriverWait wait = new WebDriverWait(driver, 3);
+        driver.get("https://jira.codecool.codecanvas.hu/projects/PP1?selectedItem=com.codecanvas.glass:glass");
+
+        String expectedProjectName = "Private Project 1";
+        String actualProjectName = driver.findElement(By.linkText(expectedProjectName)).getText();
+        assertEquals(expectedProjectName, actualProjectName);
+
+        By glassMenuXPath = By.xpath("//section[@id='sidebar-page-container']/header/nav/div/div[1]");
+        wait.until(ExpectedConditions.presenceOfElementLocated(glassMenuXPath));
+
+        driver.findElement(By.linkText("Permissions")).click();
+
+        By matrixXPath = By.xpath("//section[@id='sidebar-page-container']/div[4]/div");
+        wait.until(ExpectedConditions.presenceOfElementLocated(matrixXPath));
+
+        List<WebElement> permissionRecords = driver.findElements(By.className("permtr"));
+
+        WebElement desiredRow = null;
+        for (WebElement row : permissionRecords) {
+            if (row.getText().contains(featureName)) desiredRow = row;
+        }
+        assertNotNull(desiredRow);
+
+        By tdXPath = By.xpath("//table[@class='aui glass-perm']/tbody/tr[5]/td[2]/div");
+        By tdXPathSecond = By.xpath("//table[@class='aui glass-perm']/tbody/tr[5]/td[3]/div");
+        wait.until(ExpectedConditions.presenceOfElementLocated(tdXPath));
+        wait.until(ExpectedConditions.presenceOfElementLocated(tdXPathSecond));
+
+        driver.get("https://jira.codecool.codecanvas.hu/plugins/servlet/project-config/PP1/permissions");
+
+        By divId = By.id("project-config-panel-permissions");
+        wait.until(ExpectedConditions.presenceOfElementLocated(divId));
+        permissionRecords = driver.findElements(By.xpath("//table[@class='aui jira-admin-table']/tbody/tr"));
+
+        desiredRow = null;
+
+        for (WebElement row : permissionRecords) {
+            if (row.getAttribute("data-permission-key").equals(featureDataName)) desiredRow = row;
+        }
+        assertNotNull(desiredRow);
+
+        assertTrue(desiredRow.getText().contains("Any logged in user"));
+    }
 
 }
