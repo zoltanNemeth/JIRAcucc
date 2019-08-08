@@ -342,4 +342,17 @@ public class JiraTest {
 
     }
 
+    @Test
+    public void TestJetiProjectIssuesEditable() throws InterruptedException {
+        jiraLogin.setUser("user14");
+        jiraLogin.setPassword("CoolCanvas19.");
+        jiraLogin.login();
+        Thread.sleep(500);
+
+        driver.get("https://jira.codecool.codecanvas.hu/projects/JETI/issues/JETI-121?filter=allopenissues");
+
+        driver.findElement(By.id("edit-issue"));
+
+    }
+
 }
