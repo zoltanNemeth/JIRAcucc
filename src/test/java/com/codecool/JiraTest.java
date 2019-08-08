@@ -475,8 +475,9 @@ public class JiraTest {
     @Test
     public void openProjectRecentProject() throws InterruptedException {
         String expectedProjectName = "JETI Project (JETI)";
-        JiraLogin.login("user13", "CoolCanvas19.");
-        appUrl = "https://jira.codecool.codecanvas.hu/secure/RapidBoard.jspa";
+        jiraLogin.setUser("user17");
+        jiraLogin.login();
+        String appUrl = "https://jira.codecool.codecanvas.hu/secure/RapidBoard.jspa";
         driver.get(appUrl);
         WebElement projectsButton = driver.findElement(By.xpath("//*[@id=\"browse_link\"]"));
         projectsButton.click();
@@ -501,7 +502,6 @@ public class JiraTest {
             e.printStackTrace();
         }
     }
-
 
 
 }
