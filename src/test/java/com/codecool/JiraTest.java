@@ -4,6 +4,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,8 +14,11 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -277,6 +282,86 @@ public class JiraTest {
         jiraLogin.logout();
 
         assertTrue(actual);
+    }
+
+    private static Stream getIssueData() {
+        return Stream.of(
+            List.of("MTP-1", "https://jira.codecool.codecanvas.hu/browse/MTP-1", "user17"),
+            List.of("COALA-1", "https://jira.codecool.codecanvas.hu/browse/COALA-1", "user15"),
+            List.of("JETI-3", "https://jira.codecool.codecanvas.hu/browse/JETI-3", "user13"),
+            List.of("TOUCAN-1", "https://jira.codecool.codecanvas.hu/browse/TOUCAN-1", "user14")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("getIssueData")
+    public void projectIssuesEditable(List issue) throws InterruptedException {
+        jiraLogin.setUser(issue.get(2).toString());
+        jiraLogin.login();
+
+        System.out.println(issue.get(0).toString() + " : " + issue.get(1).toString() + " : " + issue.get(2).toString());
+
+        driver.navigate()
+            .to(issue.get(1).toString());
+
+        String issueName =
+            driver.findElement(
+                By.xpath("//a[@id='key-val']")
+            )
+            .getText();
+
+       assertTrue(issueName.equals(issue.get(0).toString()));
+
+        boolean areThereDetailsOfIssue =
+            driver.findElements(
+                By.xpath("//ul[@id='issuedetails']//li")
+            )
+            .size() > 0;
+
+        WebElement summaryOfIssue =
+            driver.findElement(
+                    By.id("summary-val")
+            );
+
+        String originalValueOfSummaryOfIssue = summaryOfIssue.getText();
+
+        assertTrue(areThereDetailsOfIssue);
+
+        String newValueOfSummaryOfIssue = originalValueOfSummaryOfIssue + ", a fine juicy apple";
+
+        summaryOfIssue.click();
+
+        WebElement summaryInputFieldOfIssue =
+                driver.findElement(
+                        By.id("summary")
+                );
+
+        summaryInputFieldOfIssue.sendKeys(newValueOfSummaryOfIssue);
+
+        driver.findElement(By.xpath("//span[text()='Save']")).click();
+
+        Thread.sleep(1000);
+
+        assertEquals(
+                newValueOfSummaryOfIssue,
+                driver.findElement(
+                    By.id("summary-val")
+                ).getText()
+        );
+
+        // Rewrite the original text
+        driver.findElement(
+                By.id("summary-val")
+        ).click();
+
+        driver.findElement(
+                By.id("summary")
+        ).sendKeys(originalValueOfSummaryOfIssue);
+
+        Thread.sleep(1000);
+
+        driver.findElement(By.xpath("//span[text()='Save']")).click();
+
     }
 
 }
