@@ -379,9 +379,10 @@ public class JiraTest {
 
     @Test
     public void SuccessfullyEditVersionDetails() throws InterruptedException {
+        jiraLogin.setUser("user17");
+        jiraLogin.login();
         String appUrl = "https://jira.codecool.codecanvas.hu/projects/PP1?selectedItem=com.atlassian.jira.jira-projects-plugin%3Arelease-page&status=unreleased";
-        int idVariable = 10591;
-        jiraLogin.setUser("'user17'");
+        int idVariable = 10621;
         driver.get(appUrl);
         WebElement actualProjectName = driver.findElement(By.xpath("//a[contains(@title,'Private Project 1')]"));
         elementIsDisplay(actualProjectName);
@@ -419,7 +420,7 @@ public class JiraTest {
 
         WebDriverWait popUpfield = new WebDriverWait(driver, 3);
         popUpfield.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='version-" + idVariable + "-delete-dialog']//input[@value='Yes']"))).click();
-        idVariable++;
+
     }
 
     protected boolean elementIsDisplay(WebElement webElement) {
