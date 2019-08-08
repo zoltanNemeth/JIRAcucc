@@ -31,7 +31,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -162,7 +161,6 @@ public class JiraTest {
         wait.until(ExpectedConditions.presenceOfElementLocated(issueThreeXPath));
     }
 
-    @Disabled
     @Test
     public void CoalaProjectContainsIssues() throws InterruptedException {
         jiraLogin.setUser("user13");
@@ -276,7 +274,6 @@ public class JiraTest {
 
         assertTrue(actual);
     }
-
     @Test
     public void UnsuccessfulLoginWithInvalidValues() throws InterruptedException {
         String errorMsg = "Sorry, your username and password are incorrect - please try again.";
@@ -530,7 +527,7 @@ public class JiraTest {
         jiraLogin.setUser("user17");
         jiraLogin.login();
         String appUrl = "https://jira.codecool.codecanvas.hu/projects/PP1?selectedItem=com.atlassian.jira.jira-projects-plugin%3Arelease-page&status=unreleased";
-        int idVariable = 10621;
+        int idVariable = 10630;
         driver.get(appUrl);
         WebElement actualProjectName = driver.findElement(By.xpath("//a[contains(@title,'Private Project 1')]"));
         elementIsDisplay(actualProjectName);
