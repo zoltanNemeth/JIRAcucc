@@ -472,4 +472,36 @@ public class JiraTest {
         }
     }
 
+    @Test
+    public void openProjectRecentProject() throws InterruptedException {
+        String expectedProjectName = "JETI Project (JETI)";
+        JiraLogin.login("user13", "CoolCanvas19.");
+        appUrl = "https://jira.codecool.codecanvas.hu/secure/RapidBoard.jspa";
+        driver.get(appUrl);
+        WebElement projectsButton = driver.findElement(By.xpath("//*[@id=\"browse_link\"]"));
+        projectsButton.click();
+        WebElement actualProjectName = driver.findElement(By.id("proj_lnk_10002_lnk"));
+        String actualProjectNameText = actualProjectName.getText();
+
+        try {
+            assertEquals(expectedProjectName, actualProjectNameText);
+
+            actualProjectName.click();
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            String expected = "JETI Project";
+            WebElement jetiCion = driver.findElement(By.xpath("//*[@id=\"content\"]/div[1]/div/div[1]/header/div/div[2]/h1/div/div/a"));
+            String actual = jetiCion.getText();
+            assertEquals(expected, actual);
+
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 }
