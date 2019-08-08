@@ -165,17 +165,9 @@ public class JiraTest {
     public void CoalaProjectContainsIssues() throws InterruptedException {
         jiraLogin.setUser("user13");
         jiraLogin.login();
-        driver.get("https://jira.codecool.codecanvas.hu/issues/?jql=project%20%3D%20COALA");
-
-        WebDriverWait wait = new WebDriverWait(driver, 3);
-
-        By issueOneXPath = By.xpath("//div[@class='list-content']/ol/li[@data-key='COALA-1']");
-        By issueTwoXPath = By.xpath("//div[@class='list-content']/ol/li[@data-key='COALA-2']");
-        By issueThreeXPath = By.xpath("//div[@class='list-content']/ol/li[@data-key='COALA-3']");
-
-        wait.until(ExpectedConditions.presenceOfElementLocated(issueOneXPath));
-        wait.until(ExpectedConditions.presenceOfElementLocated(issueTwoXPath));
-        wait.until(ExpectedConditions.presenceOfElementLocated(issueThreeXPath));
+        driver.get("https://jira.codecool.codecanvas.hu/projects/COALA/issues/COALA-1?filter=allopenissues");
+        driver.get("https://jira.codecool.codecanvas.hu/projects/COALA/issues/COALA-2?filter=allopenissues");
+        driver.get("https://jira.codecool.codecanvas.hu/projects/COALA/issues/COALA-3?filter=allopenissues");
     }
 
     @Test
