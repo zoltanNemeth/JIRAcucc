@@ -18,6 +18,15 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
@@ -152,7 +161,6 @@ public class JiraTest {
         wait.until(ExpectedConditions.presenceOfElementLocated(issueThreeXPath));
     }
 
-    @Disabled
     @Test
     public void CoalaProjectContainsIssues() throws InterruptedException {
         jiraLogin.setUser("user13");
@@ -511,6 +519,152 @@ public class JiraTest {
         assertNotNull(desiredRow);
 
         assertTrue(desiredRow.getText().contains("Any logged in user"));
+    }
+
+
+    @Test
+    public void SuccessfullyEditVersionDetails() throws InterruptedException {
+        jiraLogin.setUser("user17");
+        jiraLogin.login();
+        String appUrl = "https://jira.codecool.codecanvas.hu/projects/PP1?selectedItem=com.atlassian.jira.jira-projects-plugin%3Arelease-page&status=unreleased";
+        int idVariable = 10630;
+        driver.get(appUrl);
+        WebElement actualProjectName = driver.findElement(By.xpath("//a[contains(@title,'Private Project 1')]"));
+        elementIsDisplay(actualProjectName);
+        WebElement textField = driver.findElement(By.name("name"));
+        String exPectedText = "RegressionTeam 1.0";
+        textField.sendKeys(exPectedText);
+        WebDriverWait wait = new WebDriverWait(driver, 3);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#releases-add__version > div.releases-add__confirm > button"))).click();
+        WebElement manageVersions = driver.findElement(By.xpath("//div[@class='aui-page-header-actions']/a"));
+        manageVersions.click();
+
+        WebElement pencilIcon = driver.findElement(By.xpath("//span[contains(text(),'RegressionTeam 1.0')]"));
+        pencilIcon.click();
+
+        WebDriverWait waitEditField = new WebDriverWait(driver, 3);
+        String expextedVersion = "RegressionTeam 1.2";
+
+        waitEditField.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@value = 'RegressionTeam 1.0']"))).sendKeys(expextedVersion);
+        WebDriverWait updateButton = new WebDriverWait(driver, 3);
+
+        updateButton.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[@class='project-config-versions-add-fields aui-restfultable-focused']//input[@value='Update']"))).click();
+        appUrl = "https://jira.codecool.codecanvas.hu/projects/PP1?selectedItem=com.atlassian.jira.jira-projects-plugin%3Arelease-page&status=unreleased";
+        driver.get(appUrl);
+
+        WebElement versionLink = driver.findElement(By.xpath("//tr[@class='item-state-ready ']//a[contains(text(),'Regression')]"));
+        String actualText = versionLink.getText();
+
+        assertEquals(expextedVersion, actualText);
+
+        WebElement threeDot = driver.findElement(By.xpath("//td[@class='dynamic-table__actions']//span[@class='aui-icon aui-icon-small aui-iconfont-more']"));
+        threeDot.click();
+
+        WebDriverWait deleteButton = new WebDriverWait(driver, 3);
+        deleteButton.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"version-actions-" + idVariable + "\"]/ul/li/a[4]"))).click();
+
+        WebDriverWait popUpfield = new WebDriverWait(driver, 3);
+        popUpfield.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='version-" + idVariable + "-delete-dialog']//input[@value='Yes']"))).click();
+
+    }
+
+
+    @Test
+    public void SuccessfulIssueCreation() throws InterruptedException {
+        jiraLogin.setUser("user17");
+        jiraLogin.login();
+        WebElement createButton = driver.findElement(By.id("create_link"));
+        createButton.click();
+        WebElement iscreateIssueDialog = driver.findElement(By.id("create-issue-dialog"));
+        WebElement issuetypeSingleSelectElement = driver.findElement(By.xpath("//*[@id=\"issuetype-single-select\"]/span"));
+        elementIsDisplay(iscreateIssueDialog);
+        issuetypeSingleSelectElement.click();
+        WebDriverWait wait = new WebDriverWait(driver, 3);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"issuetype-field\"]")));
+        WebElement issuType = driver.findElement(By.xpath("//*[@id=\"issuetype-field\"]"));
+        elementIsDisplay(issuType);
+        String actual = issuType.getAttribute("aria-activedescendant");
+        String expected = "task-1";
+        assertEquals(actual, expected);
+        issuType.click();
+        String SummaryText = "Summary";
+        getSummaryField().sendKeys(SummaryText);
+
+
+    }
+
+    protected WebElement getSummaryField() {
+        WebElement summaryField = driver.findElement(By.id("summary"));
+        return summaryField;
+    }
+
+    protected boolean elementIsDisplay(WebElement webElement) {
+        try {
+            webElement.isDisplayed();
+            return true;
+
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Test
+    public void openProjectRecentProject() throws InterruptedException {
+        String expectedProjectName = "JETI Project (JETI)";
+        jiraLogin.setUser("user17");
+        jiraLogin.login();
+        String appUrl = "https://jira.codecool.codecanvas.hu/secure/RapidBoard.jspa";
+        driver.get(appUrl);
+        WebElement projectsButton = driver.findElement(By.xpath("//*[@id=\"browse_link\"]"));
+        projectsButton.click();
+        WebElement actualProjectName = driver.findElement(By.id("proj_lnk_10002_lnk"));
+        String actualProjectNameText = actualProjectName.getText();
+
+        try {
+            assertEquals(expectedProjectName, actualProjectNameText);
+
+            actualProjectName.click();
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            String expected = "JETI Project";
+            WebElement jetiCion = driver.findElement(By.xpath("//*[@id=\"content\"]/div[1]/div/div[1]/header/div/div[2]/h1/div/div/a"));
+            String actual = jetiCion.getText();
+            assertEquals(expected, actual);
+
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Test
+    public void CaptchaappearsAfterThirdFailedLoginAttempt() {
+        String appUrl = "https://jira.codecool.codecanvas.hu/login.jsp";
+        driver.get(appUrl);
+        for (int i = 0; i < 3; i++) {
+
+            WebElement userNameField = driver.findElement(By
+                    .xpath("//form[@id='login-form']//input[@id='login-form-username']"));
+            userNameField.sendKeys("user13");
+            WebElement passwordField = driver.findElement(By
+                    .xpath("//form[@id='login-form']//input[@id='login-form-password']"));
+            passwordField.sendKeys("asdfghjkl");
+            WebElement loginButton = driver.findElement(By
+                    .xpath("//form[@id='login-form']//input[@id='login-form-submit']"));
+            loginButton.click();
+        }
+
+        WebElement pTag = driver.findElement(By
+                .xpath("//form[@id='login-form']//p[contains(text(),'Sorry, your username and password are incorrect - please try again.')]"));
+
+        WebElement captcha = driver.findElement(By.xpath("//form[@id='login-form']//div[@id='captcha']"));
+        elementIsDisplay(pTag);
+        elementIsDisplay(captcha);
+
     }
 
 }
