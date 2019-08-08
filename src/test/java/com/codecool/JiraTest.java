@@ -519,7 +519,7 @@ public class JiraTest {
         jiraLogin.setUser("user17");
         jiraLogin.login();
         String appUrl = "https://jira.codecool.codecanvas.hu/projects/PP1?selectedItem=com.atlassian.jira.jira-projects-plugin%3Arelease-page&status=unreleased";
-        int idVariable = 10630;
+        int idVariable = 10640;
         driver.get(appUrl);
         WebElement actualProjectName = driver.findElement(By.xpath("//a[contains(@title,'Private Project 1')]"));
         elementIsDisplay(actualProjectName);
@@ -633,6 +633,7 @@ public class JiraTest {
     }
 
 
+    @Disabled
     @Test
     public void CaptchaappearsAfterThirdFailedLoginAttempt() {
         String appUrl = "https://jira.codecool.codecanvas.hu/login.jsp";
@@ -650,13 +651,8 @@ public class JiraTest {
             loginButton.click();
         }
 
-        WebElement pTag = driver.findElement(By
-                .xpath("//form[@id='login-form']//p[contains(text(),'Sorry, your username and password are incorrect - please try again.')]"));
-
         WebElement captcha = driver.findElement(By.xpath("//form[@id='login-form']//div[@id='captcha']"));
-        elementIsDisplay(pTag);
         elementIsDisplay(captcha);
-
     }
 
 }
