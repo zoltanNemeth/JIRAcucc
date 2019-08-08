@@ -12,10 +12,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -259,6 +261,7 @@ public class JiraTest {
 
         assertTrue(actual);
     }
+
     @Test
     public void UnsuccessfulLoginWithInvalidValues() throws InterruptedException {
         String errorMsg = "Sorry, your username and password are incorrect - please try again.";
@@ -371,6 +374,63 @@ public class JiraTest {
         By messageXPath = By.xpath("//form[@name='jiraform']/div[1]/div[2]/div[1]/div");
         WebElement actualMessage = wait.until(ExpectedConditions.presenceOfElementLocated(messageXPath));
         assertEquals(expectedErrorMessage, actualMessage.getText());
+    }
+
+
+    @Test
+    public void SuccessfullyEditVersionDetails() throws InterruptedException {
+        String appUrl = "https://jira.codecool.codecanvas.hu/projects/PP1?selectedItem=com.atlassian.jira.jira-projects-plugin%3Arelease-page&status=unreleased";
+        int idVariable = 10591;
+        jiraLogin.setUser("'user17'");
+        driver.get(appUrl);
+        WebElement actualProjectName = driver.findElement(By.xpath("//a[contains(@title,'Private Project 1')]"));
+        elementIsDisplay(actualProjectName);
+        WebElement textField = driver.findElement(By.name("name"));
+        String exPectedText = "RegressionTeam 1.0";
+        textField.sendKeys(exPectedText);
+        WebDriverWait wait = new WebDriverWait(driver, 3);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#releases-add__version > div.releases-add__confirm > button"))).click();
+        WebElement manageVersions = driver.findElement(By.xpath("//div[@class='aui-page-header-actions']/a"));
+        manageVersions.click();
+
+        WebElement pencilIcon = driver.findElement(By.xpath("//span[contains(text(),'RegressionTeam 1.0')]"));
+        pencilIcon.click();
+
+        WebDriverWait waitEditField = new WebDriverWait(driver, 3);
+        String expextedVersion = "RegressionTeam 1.2";
+
+        waitEditField.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@value = 'RegressionTeam 1.0']"))).sendKeys(expextedVersion);
+        WebDriverWait updateButton = new WebDriverWait(driver, 3);
+
+        updateButton.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[@class='project-config-versions-add-fields aui-restfultable-focused']//input[@value='Update']"))).click();
+        appUrl = "https://jira.codecool.codecanvas.hu/projects/PP1?selectedItem=com.atlassian.jira.jira-projects-plugin%3Arelease-page&status=unreleased";
+        driver.get(appUrl);
+
+        WebElement versionLink = driver.findElement(By.xpath("//tr[@class='item-state-ready ']//a[contains(text(),'Regression')]"));
+        String actualText = versionLink.getText();
+
+        assertEquals(expextedVersion, actualText);
+
+        WebElement threeDot = driver.findElement(By.xpath("//td[@class='dynamic-table__actions']//span[@class='aui-icon aui-icon-small aui-iconfont-more']"));
+        threeDot.click();
+
+        WebDriverWait deleteButton = new WebDriverWait(driver, 3);
+        deleteButton.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"version-actions-" + idVariable + "\"]/ul/li/a[4]"))).click();
+
+        WebDriverWait popUpfield = new WebDriverWait(driver, 3);
+        popUpfield.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='version-" + idVariable + "-delete-dialog']//input[@value='Yes']"))).click();
+        idVariable++;
+    }
+
+    protected boolean elementIsDisplay(WebElement webElement) {
+        try {
+            webElement.isDisplayed();
+            return true;
+
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }
