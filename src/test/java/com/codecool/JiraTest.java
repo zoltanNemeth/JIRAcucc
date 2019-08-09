@@ -702,6 +702,7 @@ public class JiraTest {
     @ParameterizedTest
     @MethodSource("getIssueData")
     public void projectIssuesEditable(List issue) throws InterruptedException {
+
         String expectedIssueName = issue.get(0).toString();
         String url = issue.get(1).toString();
         String username = issue.get(2).toString();
