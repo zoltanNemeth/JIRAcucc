@@ -702,21 +702,21 @@ public class JiraTest {
     @ParameterizedTest
     @MethodSource("getIssueData")
     public void projectIssuesEditable(List issue) throws InterruptedException {
-        jiraLogin.setUser(issue.get(2).toString());
+        String expectedIssueName = issue.get(0).toString();
+        String url = issue.get(1).toString();
+        String username = issue.get(2).toString();
+
+        jiraLogin.setUser(username);
         jiraLogin.login();
 
-        System.out.println(issue.get(0).toString() + " : " + issue.get(1).toString() + " : " + issue.get(2).toString());
+        driver.navigate().to(url);
 
-        driver.navigate()
-            .to(issue.get(1).toString());
-
-        String issueName =
+        String actualIssueName =
             driver.findElement(
                 By.xpath("//a[@id='key-val']")
-            )
-            .getText();
+            ).getText();
 
-       assertTrue(issueName.equals(issue.get(0).toString()));
+        assertEquals(expectedIssueName, actualIssueName);
 
         boolean areThereDetailsOfIssue =
             driver.findElements(
