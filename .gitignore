@@ -89,3 +89,4 @@ chromedriver
 target
 
 # End of https://www.gitignore.io/api/intellij
+.env

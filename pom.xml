@@ -48,6 +48,18 @@
             <artifactId>selenium-java</artifactId>
             <version>3.141.59</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.shyiko.dotenv</groupId>
+            <artifactId>dotenv</artifactId>
+            <version>0.1.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.shyiko.dotenv</groupId>
+            <artifactId>dotenv</artifactId>
+            <version>0.1.1</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 </project>
