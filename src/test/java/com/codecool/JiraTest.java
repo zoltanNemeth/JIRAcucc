@@ -64,6 +64,7 @@ public class JiraTest {
     }
 
     @Test
+    //TODO: Zoli
     public void ManageComponents() throws InterruptedException {
         String recordName = "JIRAcucc";
         String recordDescription = "JIRAdescription";
@@ -148,6 +149,7 @@ public class JiraTest {
 
     @Disabled
     @Test
+    //TODO: Tamás
     public void JetiProjectContainsIssues() throws InterruptedException {
         jiraLogin.setUser("user13");
         jiraLogin.login();
@@ -168,6 +170,7 @@ public class JiraTest {
     }
 
     @Test
+    //TODO: Tamás
     public void CoalaProjectContainsIssues() throws InterruptedException {
         jiraLogin.setUser("user13");
         jiraLogin.login();
@@ -177,6 +180,7 @@ public class JiraTest {
     }
 
     @Test
+    //TODO: Tamás
     public void SuccessfulCreateAnotherIssue() throws InterruptedException {
         String projectName = "Main Testing Project (MTP)";
         String summary = "This is a test issue summary";
@@ -228,6 +232,7 @@ public class JiraTest {
     }
 
     @Test
+    //TODO: Tejfi
     public void BrowseExistingProjects() throws InterruptedException {
         jiraLogin.setUser("user15");
         jiraLogin.login();
@@ -343,6 +348,7 @@ public class JiraTest {
     }
 
     @Test
+    //TODO: Tejfi
     public void BrowseExistingIssues() throws InterruptedException {
         String issueName = "TOUCAN-";
 
@@ -358,6 +364,7 @@ public class JiraTest {
     }
 
     @Test
+    //TODO: Tejfi
     public void BrowseIssuesWithAdvancedSearch() throws InterruptedException {
         String searchQuery = "project = TOUCAN";
         String issueName = "TOUCAN-";
@@ -417,6 +424,7 @@ public class JiraTest {
 
 
     @Test
+    //TODO: Tejfi
     public void browseExistingIssuesWithSearch() throws InterruptedException {
         jiraLogin.setUser("user16");
         jiraLogin.login();
@@ -701,6 +709,7 @@ public class JiraTest {
 
     @ParameterizedTest
     @MethodSource("getIssueData")
+    //TODO: Zoli
     public void projectIssuesEditable(List issue) throws InterruptedException {
 
         String expectedIssueName = issue.get(0).toString();
