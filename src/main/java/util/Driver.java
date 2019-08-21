@@ -19,7 +19,7 @@ package util;
 public class Driver {
         private WebDriver webDriver;
         private WebDriverWait driverWait;
-        private String baseRoute = "https://www.seleniumeasy.com/test/";
+        private String baseRoute = "https://jira.codecool.codecanvas.hu/";
 
 
         public Driver() {
