@@ -60,6 +60,23 @@
             <version>0.1.1</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.imalittletester</groupId>
+            <artifactId>thewaiter</artifactId>
+            <version>1.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-java</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/postgresql/postgresql -->
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.1-901-1.jdbc4</version>
+        </dependency>
     </dependencies>
 
 </project>
