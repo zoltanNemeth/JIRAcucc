@@ -7,8 +7,8 @@ import waiter.Waiter;
 
 public abstract class Page {
     static Waiter waiter = new Waiter();
-    String pageRoute;
-    WebDriver driver;
+    protected String pageRoute;
+    protected WebDriver driver;
 
     Page(String route, WebDriver driver) {
         this.driver = driver;
