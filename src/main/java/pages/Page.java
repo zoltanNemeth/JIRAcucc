@@ -1,14 +1,14 @@
 package pages;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import util.Driver;
 import waiter.Waiter;
 
 public abstract class Page {
+    protected String pageRoute;
+    protected WebDriver driver;
     static Waiter waiter = new Waiter();
-    String pageRoute;
-    WebDriver driver;
+
 
     Page(String route, WebDriver driver) {
         this.driver = driver;
