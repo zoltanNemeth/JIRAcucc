@@ -43,7 +43,7 @@ public class UnsuccessfulLoginTest {
     }
 
     @ParameterizedTest
-    @MethodSource("util.DbReader#getCredentials")
+    @MethodSource("util.DbReader#getInvalidCredentials")
     public void login(Map data) {
         String username = data.get("username").toString();
         String password = data.get("password").toString();
