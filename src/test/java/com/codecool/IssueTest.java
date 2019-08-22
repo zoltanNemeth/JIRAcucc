@@ -43,6 +43,7 @@ public class IssueTest {
     @AfterAll
     public static void close() {
         driverWait = new WebDriverWait(driver, 10);
+        driver.close();
     }
 
     public static void doLogin() {
@@ -76,24 +77,41 @@ public class IssueTest {
 
     @Test
     public void BrowseIssuesWithAdvancedSearch() {
-        String dataKey=DbReader.getAll("issue").get(1).get("issue_name").toString();
-        String exPectedprojectName= DbReader.getAll("issue").get(2).get("issue_name").toString();
+        String dataKey = DbReader
+                .getAll("issue").get(1).get("issue_name")
+                .toString();
+        String exPectedprojectName = DbReader
+                .getAll("issue").get(2).get("issue_name")
+                .toString();
         doLogin();
         issues = new Issue("", driver);
         issues.goToPage();
         issues.searchForIssues();
-        search = new Search("browse/WEAKS-8?jql=",driver);
+        search = new Search("browse/WEAKS-8?jql=", driver);
+        search.gotToAdvancedsearch();
         search.sendKeysToSearchBar(dataKey);
         search.clickSearchButton();
         String actualProjectName = search.getPageHeaderText();
-        assertEquals(exPectedprojectName,actualProjectName);
+        assertEquals(exPectedprojectName, actualProjectName);
         search.gotoBasicsearch();
-
-
-
 
 
     }
 
+    @Test
+    public void browseExistingIssuesWithSearch() {
+        doLogin();
+        issues= new Issue("secure/Dashboard.jspa",driver);
+        issues.goToPage();
+        issues.searchForIssues();
+        issues.clickShareTrigger();
+        String actualDialogtext = issues.getSharePanelIdalogValue();
+        String expectedDialogtext = DbReader.getAll("issue")
+                .get(3).get("issue_name")
+                .toString();
+        assertEquals(expectedDialogtext,actualDialogtext);
 
-}
+
+
+    }
+    }
