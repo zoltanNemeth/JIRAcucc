@@ -53,6 +53,11 @@ public class DbReader {
         return projectIssues;
     }
 
+    public static List<Map> getInvalidCredentials() {
+        return getAll("invalid_credentials");
+    }
+
+
     public static List<Map> getAll(String tableName) {
         String query = "SELECT * FROM " + tableName + ";";
 
