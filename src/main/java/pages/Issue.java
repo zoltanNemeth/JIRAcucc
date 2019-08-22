@@ -19,8 +19,6 @@ public class Issue extends  Page{
     WebElement issueFindLink;
     @FindBy(xpath = "//div[@id='issues_new']//a[@id='issues_new_search_link_lnk']")
     WebElement issueSearchLink;
-    @FindBy(xpath = "//div[@data-mode='basic']//a[contains(text(),'Advanced')]")
-    WebElement advancedButton;
 
 
     public Issue(String route, WebDriver driver) {
@@ -37,9 +35,6 @@ public class Issue extends  Page{
     public void searchForIssues(){
         issueFindLink.click();
         issueSearchLink.click();
-        if(advancedButton.isDisplayed()){
-         advancedButton.click();
-        }
 
     }
 

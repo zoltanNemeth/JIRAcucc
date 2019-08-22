@@ -7,10 +7,12 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import pages.Issue;
 import pages.Login;
+import pages.Search;
 import util.DbReader;
 import util.Driver;
 import waiter.Waiter;
@@ -27,6 +29,7 @@ public class IssueTest {
     private static DbReader db;
     private static Login login;
     private static Issue issues;
+    private static Search search;
     private Waiter waiter = new Waiter();
 
     @BeforeAll
@@ -40,7 +43,6 @@ public class IssueTest {
     @AfterAll
     public static void close() {
         driverWait = new WebDriverWait(driver, 10);
-        driver.close();
     }
 
     public static void doLogin() {
@@ -74,10 +76,23 @@ public class IssueTest {
 
     @Test
     public void BrowseIssuesWithAdvancedSearch() {
+        String dataKey=DbReader.getAll("issue").get(1).get("issue_name").toString();
+        String exPectedprojectName= DbReader.getAll("issue").get(2).get("issue_name").toString();
         doLogin();
         issues = new Issue("", driver);
         issues.goToPage();
-        issues.BrowseIssuesWithAdvancedSearch();
+        issues.searchForIssues();
+        search = new Search("browse/WEAKS-8?jql=",driver);
+        search.sendKeysToSearchBar(dataKey);
+        search.clickSearchButton();
+        String actualProjectName = search.getPageHeaderText();
+        assertEquals(exPectedprojectName,actualProjectName);
+        search.gotoBasicsearch();
+
+
+
+
+
     }
 
 
