@@ -57,13 +57,6 @@ public class IssueTest {
         login.goToPage();
     }
 
-    @ParameterizedTest
-    @MethodSource("util.DbReader#getCredentials")
-    public void login(Map data) {
-        String username = data.get("username").toString();
-        String password = data.get("password").toString();
-        login.login(username, password);
-    }
 
     @Test
     public void BrowseExistingIssues() {
