@@ -76,6 +76,7 @@ public class IssueTest {
         issues.goToPage();
         issues.searchForIssues();
         search = new Search("browse/WEAKS-8?jql=",driver);
+        search.gotToAdvancedsearch();
         search.sendKeysToSearchBar(dataKey);
         search.clickSearchButton();
         String actualProjectName = search.getPageHeaderText();
