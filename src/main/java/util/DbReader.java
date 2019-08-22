@@ -31,6 +31,27 @@ public class DbReader {
         return getAll("credentials");
 
     }
+    public static List<Map> getProjects() {
+        return getAll("project");
+
+    }
+    public static List<Map> getProjectIssues() {
+        ArrayList<Map> projectIssues = new ArrayList<Map>();
+
+        List<Map> projects = getAll("project");
+        for (Map project: projects
+             ) {
+            String projectName = project.get("project_name").toString();
+            for (int i = 1; i <= 3 ; i++) {
+                Map<String,String> record = new HashMap<String, String>();
+                String issue = projectName + "-" + i;
+                record.put("project_name", projectName);
+                record.put("issue", issue);
+                projectIssues.add(record);
+            }
+        }
+        return projectIssues;
+    }
 
     public static List<Map> getAll(String tableName) {
         String query = "SELECT * FROM " + tableName + ";";
