@@ -31,6 +31,10 @@ public class DbReader {
         return getAll("credentials");
 
     }
+    public static List<Map>getIssues(){
+
+        return getAll("issue");
+    }
 
     public static List<Map> getAll(String tableName) {
         String query = "SELECT * FROM " + tableName + ";";

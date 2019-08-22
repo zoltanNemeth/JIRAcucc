@@ -134,7 +134,7 @@ public class JiraTest {
     public void ToucanProjectContainsIssues() throws InterruptedException {
         jiraLogin.setUser("user14");
         jiraLogin.login();
-        driver.get("https://jira.codecool.codecanvas.hu/browse/TOUCAN-65?jql=project%20%3D%20TOUCAN");
+        driver.get("https://jira.codecool.codecanvas.hu/brow/TOUCAN-65?jql=project%20%3D%20TOUCAN");
 
         WebDriverWait wait = new WebDriverWait(driver, 3);
 
@@ -232,7 +232,6 @@ public class JiraTest {
     }
 
     @Test
-    //TODO: Tejfi
     public void BrowseExistingProjects() throws InterruptedException {
         jiraLogin.setUser("user15");
         jiraLogin.login();

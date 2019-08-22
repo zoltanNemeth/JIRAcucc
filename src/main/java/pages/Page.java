@@ -3,7 +3,6 @@ package pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import util.Driver;
-
 public abstract class Page {
     private String pageRoute;
     private WebDriver driver;

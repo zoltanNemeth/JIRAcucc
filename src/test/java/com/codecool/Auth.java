@@ -46,7 +46,6 @@ public class Auth {
     @AfterAll
     public static void close() {
         driverWait = new WebDriverWait(driver ,10);
-        driver.close();
     }
 
     @ParameterizedTest
