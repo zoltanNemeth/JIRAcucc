@@ -3,10 +3,12 @@ package pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import util.Driver;
+import waiter.Waiter;
 
 public abstract class Page {
-    private String pageRoute;
     protected WebDriver driver;
+    static Waiter waiter = new Waiter();
+    protected String pageRoute;
 
     Page(String route, WebDriver driver) {
         this.driver = driver;
@@ -14,8 +16,10 @@ public abstract class Page {
         this.pageRoute = driverUtil.getRoute(route);
     }
     public void goToPage() {
-        driver.navigate().to(this.pageRoute);
-        WebDriverWait driverWait = new WebDriverWait(driver, 10);
+        waiter.get(this.pageRoute, driver, 10);
+    }
+    public void goToSubPage(String subPage) {
+        waiter.get(this.pageRoute + "/" + subPage, driver, 10);
     }
 }
 

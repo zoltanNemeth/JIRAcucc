@@ -5,18 +5,18 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-
-public class Login extends Page {
+public class UnsuccessfulLogin extends Page {
     @FindBy(id="login-form-username")
     WebElement usernameField;
     @FindBy(id="login-form-password")
     WebElement passwordField;
     @FindBy(id="login-form-submit")
     WebElement btnSubmit;
+    @FindBy(xpath = "//form[@id='login-form']/div/div/p")
+    WebElement errorMsg;
 
 
-
-    public Login(WebDriver driver) {
+    public UnsuccessfulLogin(WebDriver driver) {
         super("login.jsp", driver);
         PageFactory.initElements(driver, this);
     }
@@ -27,4 +27,7 @@ public class Login extends Page {
         btnSubmit.click();
     }
 
+    public boolean validateUnsuccessfulLogin(String errorMessage) {
+        return errorMsg.getText().equals(errorMessage);
+    }
 }
