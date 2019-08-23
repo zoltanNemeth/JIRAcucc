@@ -4,10 +4,7 @@ package com.codecool;
 
 import org.junit.jupiter.api.*;
 
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import pages.Issue;
@@ -16,8 +13,6 @@ import pages.Search;
 import util.DbReader;
 import util.Driver;
 import waiter.Waiter;
-
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -107,4 +102,4 @@ public class IssueTest {
 
 
     }
-    }
+}
