@@ -6,7 +6,7 @@ import util.Driver;
 
 public abstract class Page {
     private String pageRoute;
-    private WebDriver driver;
+    protected WebDriver driver;
 
     Page(String route, WebDriver driver) {
         this.driver = driver;
