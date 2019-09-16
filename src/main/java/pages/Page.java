@@ -5,6 +5,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import util.Driver;
 import waiter.Waiter;
 
+import java.net.MalformedURLException;
+
 public abstract class Page {
     protected WebDriver driver;
     static Waiter waiter = new Waiter();

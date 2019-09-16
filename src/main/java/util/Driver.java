@@ -1,26 +1,29 @@
 package util;
 
+import com.github.shyiko.dotenv.DotEnv;
+import org.openqa.selenium.*;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-        import com.github.shyiko.dotenv.DotEnv;
-        //import org.junit.jupiter.api.Assertions;
-        import org.openqa.selenium.By;
-        import org.openqa.selenium.Keys;
-        import org.openqa.selenium.WebDriver;
-        import org.openqa.selenium.WebElement;
-        import org.openqa.selenium.chrome.ChromeDriver;
-        import org.openqa.selenium.support.ui.ExpectedConditions;
-        import org.openqa.selenium.support.ui.WebDriverWait;
-
-        import java.util.Map;
-        import java.util.concurrent.TimeUnit;
-
-        import java.util.concurrent.TimeUnit;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Map;
 
 public class Driver {
         private WebDriver webDriver;
         private WebDriverWait driverWait;
         private String baseRoute = "https://jira.codecool.codecanvas.hu/";
+        private URL remoteUrl;
+        private DesiredCapabilities capabilities;
 
+        {
+                try {
+                        remoteUrl = new URL("http://192.168.0.194:4444/wd/hub");
+                } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                }
+        }
 
         public Driver() {
                 Map<String, String> dotEnv = DotEnv.load();
@@ -30,7 +33,10 @@ public class Driver {
 
 
         public WebDriver getWebDriver() {
-                this.webDriver = new ChromeDriver();
+                this.capabilities = DesiredCapabilities.chrome();
+//                this.capabilities.setBrowserName("chrome");
+//                this.capabilities.setPlatform(Platform.LINUX);
+                this.webDriver = new RemoteWebDriver(remoteUrl, capabilities);
                 this.driverWait = new WebDriverWait(webDriver, 10);
                 this.webDriver.manage().window().maximize();
                 return this.webDriver;

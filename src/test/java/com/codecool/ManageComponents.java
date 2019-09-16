@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import org.openqa.selenium.WebDriver;
 import pages.Login;
 import pages.PP1Components;
 import pages.PP1ComponentsEditable;
@@ -15,7 +14,6 @@ import util.Driver;
 import waiter.Waiter;
 
 public class ManageComponents {
-    private static WebDriver driver;
     private static Driver driverUtil;
     private static DbReader db;
 
@@ -25,8 +23,7 @@ public class ManageComponents {
     @BeforeAll
     public static void setup(){
         driverUtil = new Driver();
-        driver = driverUtil.getWebDriver();
-        login = new Login(driver);
+        login = new Login(driverUtil.getWebDriver());
         db = new DbReader();
     }
 
@@ -37,18 +34,18 @@ public class ManageComponents {
 
     @AfterAll
     public static void close() {
-        driver.quit();
+        driverUtil.getWebDriver().quit();
     }
 
     @Test
     public void manageComponents() {
-        Login login = new Login(driver);
+        Login login = new Login(driverUtil.getWebDriver());
         login.login(
                 db.getAll("credentials").get(0).get("username").toString(),
                 db.getAll("credentials").get(0).get("password").toString()
         );
         PP1ComponentsEditable pp1ComponentsEditable =
-                new PP1ComponentsEditable("/plugins/servlet/project-config/PP1/components", driver);
+                new PP1ComponentsEditable("/plugins/servlet/project-config/PP1/components", driverUtil.getWebDriver());
         pp1ComponentsEditable.goToPage();
 
         assertEquals("Private Project 1", pp1ComponentsEditable.getProjectNameFromPage());
@@ -65,7 +62,7 @@ public class ManageComponents {
         PP1Glass pp1Glass =
             new PP1Glass(
                 "projects/PP1?selectedItem=com.codecanvas.glass:glass",
-                driver
+                driverUtil.getWebDriver()
             );
         pp1Glass.goToPage();
 
@@ -74,7 +71,7 @@ public class ManageComponents {
         PP1Components pp1Components =
             new PP1Components(
                 "projects/PP1?selectedItem=com.atlassian.jira.jira-projects-plugin:components-page",
-                    driver
+                    driverUtil.getWebDriver()
             );
 
         pp1Components.goToPage();
