@@ -699,10 +699,10 @@ public class JiraTest {
 
     private static Stream getIssueData() {
         return Stream.of(
-            List.of("MTP-1", "https://jira.codecool.codecanvas.hu/browse/MTP-1", "user17"),
-            List.of("COALA-1", "https://jira.codecool.codecanvas.hu/browse/COALA-1", "user15"),
-            List.of("JETI-3", "https://jira.codecool.codecanvas.hu/browse/JETI-3", "user13"),
-            List.of("TOUCAN-1", "https://jira.codecool.codecanvas.hu/browse/TOUCAN-1", "user14")
+//            List.of("MTP-1", "https://jira.codecool.codecanvas.hu/browse/MTP-1", "user17"),
+//            List.of("COALA-1", "https://jira.codecool.codecanvas.hu/browse/COALA-1", "user15"),
+//            List.of("JETI-3", "https://jira.codecool.codecanvas.hu/browse/JETI-3", "user13"),
+//            List.of("TOUCAN-1", "https://jira.codecool.codecanvas.hu/browse/TOUCAN-1", "user14")
         );
     }
 
