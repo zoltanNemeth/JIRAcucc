@@ -27,8 +27,12 @@ public class Driver {
 
         public WebDriver getWebDriver() {
                 this.capabilities = DesiredCapabilities.chrome();
-                this.webDriver = new RemoteWebDriver(remoteUrl, capabilities);
-                this.driverWait = new WebDriverWait(webDriver, 10);
+            try {
+                this.webDriver = new RemoteWebDriver(new URL("http://172.18.0.3:40000"), capabilities);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            this.driverWait = new WebDriverWait(webDriver, 10);
                 this.webDriver.manage().window().maximize();
                 return this.webDriver;
         }
