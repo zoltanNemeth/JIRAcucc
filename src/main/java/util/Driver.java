@@ -25,13 +25,6 @@ public class Driver {
                 }
         }
 
-        public Driver() {
-                Map<String, String> dotEnv = DotEnv.load();
-
-                System.setProperty(dotEnv.get("DRIVER_TYPE"), dotEnv.get("WEBDRIVER_PROPERTY"));
-        }
-
-
         public WebDriver getWebDriver() {
                 this.capabilities = DesiredCapabilities.chrome();
                 this.webDriver = new RemoteWebDriver(remoteUrl, capabilities);
