@@ -26,5 +26,4 @@ public class Login extends Page {
         passwordField.sendKeys(password);
         btnSubmit.click();
     }
-
 }

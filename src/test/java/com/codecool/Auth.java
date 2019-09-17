@@ -1,11 +1,6 @@
 
 package com.codecool;
 
-import org.junit.jupiter.api.Test;
-
-
-
-
 import org.junit.jupiter.api.*;
 
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,8 +13,6 @@ import util.DbReader;
 import util.Driver;
 import waiter.Waiter;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 

@@ -19,7 +19,7 @@ public class Driver {
 
         {
                 try {
-                        remoteUrl = new URL("http://192.168.0.194:4444/wd/hub");
+                        remoteUrl = new URL("http://10.44.2.12:4444/wd/hub");
                 } catch (MalformedURLException e) {
                         e.printStackTrace();
                 }
@@ -34,8 +34,6 @@ public class Driver {
 
         public WebDriver getWebDriver() {
                 this.capabilities = DesiredCapabilities.chrome();
-//                this.capabilities.setBrowserName("chrome");
-//                this.capabilities.setPlatform(Platform.LINUX);
                 this.webDriver = new RemoteWebDriver(remoteUrl, capabilities);
                 this.driverWait = new WebDriverWait(webDriver, 10);
                 this.webDriver.manage().window().maximize();
