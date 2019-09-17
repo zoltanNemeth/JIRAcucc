@@ -19,7 +19,7 @@ public class Driver {
 
         {
                 try {
-                        remoteUrl = new URL("https://seleniumhub.codecool.codecanvas.hu/wd/hub");
+                        remoteUrl = new URL("http://" + System.getProperty("JENKINS_USERNAME") + ":" + System.getProperty("JENKINS_PW") + "@" + System.getProperty("JENKINS_BASE_URL"));
                 } catch (MalformedURLException e) {
                         e.printStackTrace();
                 }
