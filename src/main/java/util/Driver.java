@@ -19,7 +19,7 @@ public class Driver {
 
         {
                 try {
-                        remoteUrl = new URL("http://10.44.2.12:4444/wd/hub");
+                        remoteUrl = new URL("https://seleniumhub.codecool.codecanvas.hu/wd/hub");
                 } catch (MalformedURLException e) {
                         e.printStackTrace();
                 }
