@@ -21,7 +21,7 @@ public class Driver {
 
     {
         try {
-            remoteUrl = new URL("http://" + System.getProperty("JENKINS_USERNAME") + ":" + System.getProperty("JENKINS_PW") + "@" + System.getProperty("JENKINS_BASE_URL"));
+            remoteUrl = new URL("http://" + System.getenv("JENKINS_USERNAME") + ":" + System.getenv("JENKINS_PW") + "@" + System.getenv("JENKINS_BASE_URL"));
             System.out.println(remoteUrl);
         } catch (MalformedURLException e) {
             e.printStackTrace();
