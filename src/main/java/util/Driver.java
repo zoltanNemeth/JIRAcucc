@@ -2,6 +2,7 @@ package util;
 
 import com.github.shyiko.dotenv.DotEnv;
 import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -21,6 +22,7 @@ public class Driver {
     {
         try {
             remoteUrl = new URL("http://" + System.getProperty("JENKINS_USERNAME") + ":" + System.getProperty("JENKINS_PW") + "@" + System.getProperty("JENKINS_BASE_URL"));
+            System.out.println(remoteUrl);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -28,12 +30,12 @@ public class Driver {
 
     public WebDriver getWebDriver() {
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setBrowserName("firefox");
+        capabilities.setBrowserName("chrome");
         capabilities.setPlatform(Platform.LINUX);
-        FirefoxOptions firefoxOptions = new FirefoxOptions();
-        firefoxOptions.addArguments("--start-maximized");
-        firefoxOptions.merge(capabilities);
-        webDriver = new RemoteWebDriver(remoteUrl, firefoxOptions);
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("--start-maximized");
+        chromeOptions.merge(capabilities);
+        webDriver = new RemoteWebDriver(remoteUrl, chromeOptions);
         return webDriver;
     }
 
