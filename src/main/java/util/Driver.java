@@ -8,7 +8,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Map;
 
 public class Driver {
     private WebDriver webDriver;
