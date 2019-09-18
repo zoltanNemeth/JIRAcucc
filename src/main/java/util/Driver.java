@@ -28,8 +28,8 @@ public class Driver {
 
         public WebDriver getWebDriver() {
                 this.capabilities = DesiredCapabilities.chrome();
-                this.capabilities.setBrowserName("chrome");
-                this.capabilities.setPlatform(Platform.LINUX);
+                //this.capabilities.setBrowserName("chrome");
+                //this.capabilities.setPlatform(Platform.LINUX);
                 this.webDriver = new RemoteWebDriver(remoteUrl, capabilities);
                 this.driverWait = new WebDriverWait(webDriver, 10);
                 this.webDriver.manage().window().maximize();
