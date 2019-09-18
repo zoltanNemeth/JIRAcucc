@@ -5,10 +5,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
 import pages.Login;
 import pages.PP1Components;
 import pages.PP1ComponentsEditable;
 import pages.PP1Glass;
+
 import util.DbReader;
 import util.Driver;
 import waiter.Waiter;
