@@ -30,13 +30,8 @@ public class Driver {
                 this.capabilities = DesiredCapabilities.chrome();
                 this.capabilities.setBrowserName("chrome");
                 this.capabilities.setPlatform(Platform.LINUX);
-
-            try {
-                this.webDriver = new RemoteWebDriver(new URL("172.18.0.3:40000"), capabilities);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-            this.driverWait = new WebDriverWait(webDriver, 10);
+                this.webDriver = new RemoteWebDriver(remoteUrl, capabilities);
+                this.driverWait = new WebDriverWait(webDriver, 10);
                 this.webDriver.manage().window().maximize();
                 return this.webDriver;
         }
