@@ -26,7 +26,7 @@ public class Driver {
     }
 
         public WebDriver getWebDriver() {
-                this.capabilities = DesiredCapabilities.chrome();
+                this.capabilities = DesiredCapabilities.firefox();
                 //this.capabilities.setBrowserName("chrome");
                 //this.capabilities.setPlatform(Platform.LINUX);
                 this.webDriver = new RemoteWebDriver(remoteUrl, capabilities);
