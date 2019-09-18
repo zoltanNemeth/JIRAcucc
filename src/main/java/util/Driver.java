@@ -1,14 +1,13 @@
 package util;
 
-import com.github.shyiko.dotenv.DotEnv;
-import org.openqa.selenium.*;
+import org.openqa.selenium.Platform;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Map;
 
 public class Driver {
         private WebDriver webDriver;
@@ -27,8 +26,11 @@ public class Driver {
 
         public WebDriver getWebDriver() {
                 this.capabilities = DesiredCapabilities.chrome();
+                this.capabilities.setBrowserName("chrome");
+                this.capabilities.setPlatform(Platform.LINUX);
+
             try {
-                this.webDriver = new RemoteWebDriver(new URL("http://172.18.0.3:40000"), capabilities);
+                this.webDriver = new RemoteWebDriver(new URL("172.18.0.3:40000"), capabilities);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
