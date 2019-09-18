@@ -16,7 +16,7 @@ import waiter.Waiter;
 import java.util.Map;
 
 
-public class Auth {
+public class AuthTest {
     private static WebDriver driver;
     private static Driver driverUtil;
     private static WebDriverWait driverWait;

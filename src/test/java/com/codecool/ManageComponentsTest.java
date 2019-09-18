@@ -13,7 +13,7 @@ import util.DbReader;
 import util.Driver;
 import waiter.Waiter;
 
-public class ManageComponents {
+public class ManageComponentsTest {
     private static Driver driverUtil;
     private static DbReader db;
 
