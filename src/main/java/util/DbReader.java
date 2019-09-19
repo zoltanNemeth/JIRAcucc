@@ -10,8 +10,8 @@ import com.github.shyiko.dotenv.DotEnv;
 
 public class DbReader {
     private static final String DATABASE = "jdbc:postgresql://173.212.197.253:54301/jira_cucc";
-    private static final String DB_USER = System.getenv("DB_USER");
-    private static final String DB_PASSWORD = System.getenv("DB_PWD");
+    private static final String DB_USER = System.getProperty("DB_USER");
+    private static final String DB_PASSWORD = System.getProperty("DB_PWD");
 
     public DbReader() {
 
