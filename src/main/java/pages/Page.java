@@ -1,11 +1,9 @@
 package pages;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import util.Driver;
 import waiter.Waiter;
 
-import java.net.MalformedURLException;
 
 public abstract class Page {
     protected WebDriver driver;
