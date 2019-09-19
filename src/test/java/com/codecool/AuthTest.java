@@ -12,6 +12,7 @@ import pages.Login;
 import util.DbReader;
 import util.Driver;
 import waiter.Waiter;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Map;
 
@@ -39,6 +40,7 @@ public class AuthTest {
     @AfterAll
     public static void close() {
         driverWait = new WebDriverWait(driver ,10);
+        driver.close();
     }
 
     @ParameterizedTest
@@ -47,6 +49,8 @@ public class AuthTest {
         String username = data.get("username").toString();
         String password = data.get("password").toString();
         login.login(username, password);
+        login.clickOnProfileImg();
+        assertTrue(login.validateProfileImgIsPresent("Log Out"));
     }
 
 }
