@@ -24,20 +24,22 @@ public class Driver {
         }
     }
 
-        public WebDriver getWebDriver() {
-                this.capabilities = DesiredCapabilities.chrome();
-                this.webDriver = new RemoteWebDriver(remoteUrl, capabilities);
-                this.driverWait = new WebDriverWait(webDriver, 10);
-                this.webDriver.manage().window().maximize();
-                return this.webDriver;
-        }
-        public void goTo(String route) {
-                webDriver.navigate().to(baseRoute + route);
-                this.driverWait = new WebDriverWait(webDriver, 10);
-        }
-        public String getRoute(String route) {
-                return baseRoute + route;
-        }
+    public WebDriver getWebDriver() {
+            this.capabilities = DesiredCapabilities.chrome();
+            this.webDriver = new RemoteWebDriver(remoteUrl, capabilities);
+            this.driverWait = new WebDriverWait(webDriver, 10);
+            this.webDriver.manage().window().maximize();
+            return this.webDriver;
+    }
+
+    public void goTo(String route) {
+            webDriver.navigate().to(baseRoute + route);
+            this.driverWait = new WebDriverWait(webDriver, 10);
+    }
+
+    public String getRoute(String route) {
+            return baseRoute + route;
+    }
 
 
 }
