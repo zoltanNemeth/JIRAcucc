@@ -87,7 +87,7 @@ public class IssueTest {
     }
 
     @Test
-    public void browseExistingIssuesWithSearch() {
+    public void BrowseExistingIssuesWithSearch() {
         doLogin();
         issues= new Issue("secure/Dashboard.jspa",driver);
         issues.goToPage();
