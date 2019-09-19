@@ -22,7 +22,6 @@ public class AuthTest {
     private static Driver driverUtil;
     private static WebDriverWait driverWait;
     private static DbReader db;
-
     private static Login login;
     private Waiter waiter = new Waiter();
 
