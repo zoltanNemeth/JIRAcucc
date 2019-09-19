@@ -33,10 +33,12 @@ public class AuthTest {
         login = new Login(driver);
         db = new DbReader();
     }
+
     @BeforeEach
     public void goToPage(){
         login.goToPage();
     }
+
     @AfterAll
     public static void close() {
         driverWait = new WebDriverWait(driver ,10);
