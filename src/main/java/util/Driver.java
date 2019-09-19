@@ -1,6 +1,5 @@
 package util;
 
-import com.github.shyiko.dotenv.DotEnv;
 import org.openqa.selenium.*;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -18,7 +17,7 @@ public class Driver {
 
     {
         try {
-            remoteUrl = new URL("https://" + System.getenv("JENKINS_USERNAME") + ":" + System.getenv("JENKINS_PW") + "@" + System.getenv("JENKINS_BASE_URL"));
+            remoteUrl = new URL(System.getenv("JENKINS_BASE_URL"));
             System.out.println(remoteUrl);
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -27,8 +26,6 @@ public class Driver {
 
         public WebDriver getWebDriver() {
                 this.capabilities = DesiredCapabilities.chrome();
-                //this.capabilities.setBrowserName("chrome");
-                //this.capabilities.setPlatform(Platform.LINUX);
                 this.webDriver = new RemoteWebDriver(remoteUrl, capabilities);
                 this.driverWait = new WebDriverWait(webDriver, 10);
                 this.webDriver.manage().window().maximize();

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.openqa.selenium.WebDriver;
 import pages.Login;
 import pages.PP1Components;
 import pages.PP1ComponentsEditable;
@@ -16,7 +17,7 @@ import util.Driver;
 import waiter.Waiter;
 
 public class ManageComponentsTest {
-    private static Driver driverUtil;
+    private static WebDriver driver;
     private static DbReader db;
 
     private static Login login;
@@ -24,8 +25,8 @@ public class ManageComponentsTest {
 
     @BeforeAll
     public static void setup(){
-        driverUtil = new Driver();
-        login = new Login(driverUtil.getWebDriver());
+        driver = new Driver().getWebDriver();
+        login = new Login(driver);
         db = new DbReader();
     }
 
@@ -36,18 +37,18 @@ public class ManageComponentsTest {
 
     @AfterAll
     public static void close() {
-        driverUtil.getWebDriver().quit();
+        driver.quit();
     }
 
     @Test
     public void manageComponents() {
-        Login login = new Login(driverUtil.getWebDriver());
+        Login login = new Login(driver);
         login.login(
                 db.getAll("credentials").get(0).get("username").toString(),
                 db.getAll("credentials").get(0).get("password").toString()
         );
         PP1ComponentsEditable pp1ComponentsEditable =
-                new PP1ComponentsEditable("/plugins/servlet/project-config/PP1/components", driverUtil.getWebDriver());
+                new PP1ComponentsEditable("/plugins/servlet/project-config/PP1/components", driver);
         pp1ComponentsEditable.goToPage();
 
         assertEquals("Private Project 1", pp1ComponentsEditable.getProjectNameFromPage());
@@ -64,7 +65,7 @@ public class ManageComponentsTest {
         PP1Glass pp1Glass =
             new PP1Glass(
                 "projects/PP1?selectedItem=com.codecanvas.glass:glass",
-                driverUtil.getWebDriver()
+                driver
             );
         pp1Glass.goToPage();
 
@@ -73,7 +74,7 @@ public class ManageComponentsTest {
         PP1Components pp1Components =
             new PP1Components(
                 "projects/PP1?selectedItem=com.atlassian.jira.jira-projects-plugin:components-page",
-                    driverUtil.getWebDriver()
+                driver
             );
 
         pp1Components.goToPage();
