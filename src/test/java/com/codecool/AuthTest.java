@@ -19,7 +19,6 @@ import java.util.Map;
 
 public class AuthTest {
     private static WebDriver driver;
-    private static Driver driverUtil;
     private static WebDriverWait driverWait;
     private static DbReader db;
     private static Login login;
@@ -27,8 +26,7 @@ public class AuthTest {
 
     @BeforeAll
     public static void setup(){
-        driverUtil = new Driver();
-        driver = driverUtil.getWebDriver();
+        driver = new Driver().getWebDriver();
         login = new Login(driver);
         db = new DbReader();
     }
