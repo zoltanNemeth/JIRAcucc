@@ -1,6 +1,7 @@
 package util;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -25,20 +26,22 @@ public class Driver {
     }
 
     public WebDriver getWebDriver() {
-            this.capabilities = DesiredCapabilities.chrome();
-            this.webDriver = new RemoteWebDriver(remoteUrl, capabilities);
-            this.driverWait = new WebDriverWait(webDriver, 10);
-            this.webDriver.manage().window().maximize();
-            return this.webDriver;
+        this.capabilities = DesiredCapabilities.chrome();
+        this.driverWait = new WebDriverWait(webDriver, 10);
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--start-maximized");
+        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+        this.webDriver = new RemoteWebDriver(remoteUrl, capabilities);
+        return this.webDriver;
     }
 
     public void goTo(String route) {
-            webDriver.navigate().to(baseRoute + route);
-            this.driverWait = new WebDriverWait(webDriver, 10);
+        webDriver.navigate().to(baseRoute + route);
+        this.driverWait = new WebDriverWait(webDriver, 10);
     }
 
     public String getRoute(String route) {
-            return baseRoute + route;
+        return baseRoute + route;
     }
 
 
